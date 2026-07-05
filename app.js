@@ -184,6 +184,86 @@ function initCountdown() {
 // ==========================================
 let ytPlayer = null;
 let ytPlayerReady = false;
+let isAmbientPlaying = false;
+let ambientSynth = null;
+
+// Global Audio control methods
+function playAmbientMusic() {
+  if (isAmbientPlaying) return;
+  
+  const container = document.getElementById('audioContainer');
+  const toggle = document.getElementById('audioToggle');
+  if (!container || !toggle) return;
+  
+  const playIcon = toggle.querySelector('.icon-play');
+  const pauseIcon = toggle.querySelector('.icon-pause');
+  
+  if (ytPlayer && ytPlayerReady) {
+    try {
+      ytPlayer.playVideo();
+    } catch(e) {
+      console.warn("YouTube play failed, starting fallback synth", e);
+      if (!ambientSynth) ambientSynth = new AmbientMelodySynth();
+      ambientSynth.start();
+    }
+  } else {
+    if (!ambientSynth) ambientSynth = new AmbientMelodySynth();
+    ambientSynth.start();
+  }
+  
+  container.classList.add('playing');
+  playIcon.classList.add('hidden');
+  pauseIcon.classList.remove('hidden');
+  isAmbientPlaying = true;
+}
+
+function pauseAmbientMusic() {
+  if (!isAmbientPlaying) return;
+  
+  const container = document.getElementById('audioContainer');
+  const toggle = document.getElementById('audioToggle');
+  if (!container || !toggle) return;
+  
+  const playIcon = toggle.querySelector('.icon-play');
+  const pauseIcon = toggle.querySelector('.icon-pause');
+  
+  if (ytPlayer && ytPlayerReady) {
+    try {
+      ytPlayer.pauseVideo();
+    } catch(e) {
+      console.warn("YouTube pause failed, stopping fallback synth", e);
+    }
+  } else if (ambientSynth) {
+    ambientSynth.stop();
+  }
+  
+  container.classList.remove('playing');
+  playIcon.classList.remove('hidden');
+  pauseIcon.classList.add('hidden');
+  isAmbientPlaying = false;
+}
+
+function tryAutoplay() {
+  // 1. Try standard play immediately on player ready
+  playAmbientMusic();
+  
+  // 2. Set up listeners to play as soon as the user interacts with the page (bypasses browser autoplay blocks)
+  const startPlayOnGesture = () => {
+    if (!isAmbientPlaying) {
+      playAmbientMusic();
+    }
+    // Clean up listeners
+    document.removeEventListener('click', startPlayOnGesture);
+    document.removeEventListener('touchstart', startPlayOnGesture);
+    document.removeEventListener('scroll', startPlayOnGesture);
+    document.removeEventListener('keydown', startPlayOnGesture);
+  };
+  
+  document.addEventListener('click', startPlayOnGesture);
+  document.addEventListener('touchstart', startPlayOnGesture);
+  document.addEventListener('scroll', startPlayOnGesture);
+  document.addEventListener('keydown', startPlayOnGesture);
+}
 
 // Inject YouTube Iframe API script dynamically
 const tag = document.createElement('script');
@@ -197,7 +277,7 @@ window.onYouTubeIframeAPIReady = function() {
     width: '0',
     videoId: 'UtbxruJ2r1w',
     playerVars: {
-      'autoplay': 0,
+      'autoplay': 1,
       'controls': 0,
       'loop': 1,
       'playlist': 'UtbxruJ2r1w', // Required for loop to work
@@ -207,6 +287,8 @@ window.onYouTubeIframeAPIReady = function() {
     events: {
       'onReady': () => {
         ytPlayerReady = true;
+        // Attempt autoplay on ready
+        tryAutoplay();
       },
       'onError': (e) => {
         console.warn("YouTube Player failed to initialize. Falling back to Web Audio Synth.", e);
@@ -215,167 +297,131 @@ window.onYouTubeIframeAPIReady = function() {
   });
 };
 
-function initAudioSynth() {
-  const container = document.getElementById('audioContainer');
-  const toggle = document.getElementById('audioToggle');
-  const playIcon = toggle.querySelector('.icon-play');
-  const pauseIcon = toggle.querySelector('.icon-pause');
-  
-  let synth = null;
-  let isPlaying = false;
-  
-  class AmbientMelodySynth {
-    constructor() {
-      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-      
-      // Node setup: synth -> filter -> delay -> master gain -> output
-      this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.value = 0.15; // Soft volume
-      
-      this.delay = this.ctx.createDelay(1.0);
-      this.delayFeedback = this.ctx.createGain();
-      
-      this.delay.delayTime.value = 0.6; // Soothing echo
-      this.delayFeedback.gain.value = 0.45; // Slow echo decay
-      
-      this.filter = this.ctx.createBiquadFilter();
-      this.filter.type = 'lowpass';
-      this.filter.frequency.value = 800; // Warm, dark filter to sound like a soft felt piano
-      
-      // Connections
-      this.delay.connect(this.delayFeedback);
-      this.delayFeedback.connect(this.delay);
-      
-      this.filter.connect(this.masterGain);
-      this.filter.connect(this.delay);
-      this.delay.connect(this.masterGain);
-      this.masterGain.connect(this.ctx.destination);
-      
-      this.isPlaying = false;
-      this.sequenceTimer = null;
-      this.bassTimer = null;
-      this.step = 0;
-      
-      // Pentatonic Scale notes (C major pentatonic: C4, D4, E4, G4, A4, C5, D5, E5, G5, A5)
-      this.scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00];
-      
-      // Chord progression bass roots (C3, Am3, F3, G3)
-      this.chords = [
-        [130.81, 196.00], // C3 & G3
-        [110.00, 165.00], // A2 & E3
-        [87.31, 130.81],  // F2 & C3
-        [98.00, 146.83]   // G2 & D3
-      ];
-      this.chordIdx = 0;
-    }
+class AmbientMelodySynth {
+  constructor() {
+    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     
-    playNote(freq, startTime, duration) {
-      if (this.ctx.state === 'suspended') {
-        this.ctx.resume();
-      }
-      
-      const osc = this.ctx.createOscillator();
-      const noteGain = this.ctx.createGain();
-      
-      // Soft triangle/sine wave mixture for a warm electric piano tone
-      osc.type = 'sine';
-      
-      noteGain.gain.setValueAtTime(0, startTime);
-      noteGain.gain.linearRampToValueAtTime(0.4, startTime + 0.1); // Slow attack
-      noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration); // Long release
-      
-      osc.frequency.setValueAtTime(freq, startTime);
-      osc.connect(noteGain);
-      noteGain.connect(this.filter);
-      
-      osc.start(startTime);
-      osc.stop(startTime + duration);
-    }
+    // Node setup: synth -> filter -> delay -> master gain -> output
+    this.masterGain = this.ctx.createGain();
+    this.masterGain.gain.value = 0.15; // Soft volume
     
-    start() {
-      this.isPlaying = true;
-      if (this.ctx.state === 'suspended') {
-        this.ctx.resume();
-      }
-      
-      const scheduleMelody = () => {
-        if (!this.isPlaying) return;
-        const now = this.ctx.currentTime;
-        
-        // Randomly play a note from the pentatonic scale to create an endless ambient flow
-        if (Math.random() > 0.3) {
-          const randomNote = this.scale[Math.floor(Math.random() * this.scale.length)];
-          // Slightly detune to give warm analog character
-          const noteFreq = randomNote * (1 + (Math.random() - 0.5) * 0.004);
-          this.playNote(noteFreq, now, 1.8);
-        }
-        
-        // Next note timing (slow tempo)
-        const nextTime = Math.random() * 600 + 400; // 400ms to 1000ms steps
-        this.sequenceTimer = setTimeout(scheduleMelody, nextTime);
-      };
-      
-      const scheduleBass = () => {
-        if (!this.isPlaying) return;
-        const now = this.ctx.currentTime;
-        const currentChord = this.chords[this.chordIdx];
-        
-        // Play bass pad
-        currentChord.forEach(f => {
-          this.playNote(f, now, 4.8);
-        });
-        
-        this.chordIdx = (this.chordIdx + 1) % this.chords.length;
-        this.bassTimer = setTimeout(scheduleBass, 5000); // Pad changes every 5 seconds
-      };
-      
-      scheduleMelody();
-      scheduleBass();
-    }
+    this.delay = this.ctx.createDelay(1.0);
+    this.delayFeedback = this.ctx.createGain();
     
-    stop() {
-      this.isPlaying = false;
-      clearTimeout(this.sequenceTimer);
-      clearTimeout(this.bassTimer);
-    }
+    this.delay.delayTime.value = 0.6; // Soothing echo
+    this.delayFeedback.gain.value = 0.45; // Slow echo decay
+    
+    this.filter = this.ctx.createBiquadFilter();
+    this.filter.type = 'lowpass';
+    this.filter.frequency.value = 800; // Warm, dark filter to sound like a soft felt piano
+    
+    // Connections
+    this.delay.connect(this.delayFeedback);
+    this.delayFeedback.connect(this.delay);
+    
+    this.filter.connect(this.masterGain);
+    this.filter.connect(this.delay);
+    this.delay.connect(this.masterGain);
+    this.masterGain.connect(this.ctx.destination);
+    
+    this.isPlaying = false;
+    this.sequenceTimer = null;
+    this.bassTimer = null;
+    this.step = 0;
+    
+    // Pentatonic Scale notes (C major pentatonic: C4, D4, E4, G4, A4, C5, D5, E5, G5, A5)
+    this.scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00];
+    
+    // Chord progression bass roots (C3, Am3, F3, G3)
+    this.chords = [
+      [130.81, 196.00], // C3 & G3
+      [110.00, 165.00], // A2 & E3
+      [87.31, 130.81],  // F2 & C3
+      [98.00, 146.83]   // G2 & D3
+    ];
+    this.chordIdx = 0;
   }
   
+  playNote(freq, startTime, duration) {
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+    
+    const osc = this.ctx.createOscillator();
+    const noteGain = this.ctx.createGain();
+    
+    // Soft triangle/sine wave mixture for a warm electric piano tone
+    osc.type = 'sine';
+    
+    noteGain.gain.setValueAtTime(0, startTime);
+    noteGain.gain.linearRampToValueAtTime(0.4, startTime + 0.1); // Slow attack
+    noteGain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration); // Long release
+    
+    osc.frequency.setValueAtTime(freq, startTime);
+    osc.connect(noteGain);
+    noteGain.connect(this.filter);
+    
+    osc.start(startTime);
+    osc.stop(startTime + duration);
+  }
+  
+  start() {
+    this.isPlaying = true;
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+    
+    const scheduleMelody = () => {
+      if (!this.isPlaying) return;
+      const now = this.ctx.currentTime;
+      
+      // Randomly play a note from the pentatonic scale to create an endless ambient flow
+      if (Math.random() > 0.3) {
+        const randomNote = this.scale[Math.floor(Math.random() * this.scale.length)];
+        // Slightly detune to give warm analog character
+        const noteFreq = randomNote * (1 + (Math.random() - 0.5) * 0.004);
+        this.playNote(noteFreq, now, 1.8);
+      }
+      
+      // Next note timing (slow tempo)
+      const nextTime = Math.random() * 600 + 400; // 400ms to 1000ms steps
+      this.sequenceTimer = setTimeout(scheduleMelody, nextTime);
+    };
+    
+    const scheduleBass = () => {
+      if (!this.isPlaying) return;
+      const now = this.ctx.currentTime;
+      const currentChord = this.chords[this.chordIdx];
+      
+      // Play bass pad
+      currentChord.forEach(f => {
+        this.playNote(f, now, 4.8);
+      });
+      
+      this.chordIdx = (this.chordIdx + 1) % this.chords.length;
+      this.bassTimer = setTimeout(scheduleBass, 5000); // Pad changes every 5 seconds
+    };
+    
+    scheduleMelody();
+    scheduleBass();
+  }
+  
+  stop() {
+    this.isPlaying = false;
+    clearTimeout(this.sequenceTimer);
+    clearTimeout(this.bassTimer);
+  }
+}
+
+function initAudioSynth() {
+  const container = document.getElementById('audioContainer');
+  if (!container) return;
+  
   container.addEventListener('click', () => {
-    if (isPlaying) {
-      if (ytPlayer && ytPlayerReady) {
-        try {
-          ytPlayer.pauseVideo();
-        } catch(e) {
-          console.warn("YouTube pause failed, stopping fallback synth", e);
-        }
-      } else if (synth) {
-        synth.stop();
-      }
-      
-      container.classList.remove('playing');
-      playIcon.classList.remove('hidden');
-      pauseIcon.classList.add('hidden');
-      isPlaying = false;
+    if (isAmbientPlaying) {
+      pauseAmbientMusic();
     } else {
-      if (ytPlayer && ytPlayerReady) {
-        try {
-          ytPlayer.playVideo();
-        } catch(e) {
-          console.warn("YouTube play failed, starting fallback synth", e);
-          if (!synth) synth = new AmbientMelodySynth();
-          synth.start();
-        }
-      } else {
-        if (!synth) {
-          synth = new AmbientMelodySynth();
-        }
-        synth.start();
-      }
-      
-      container.classList.add('playing');
-      playIcon.classList.add('hidden');
-      pauseIcon.classList.remove('hidden');
-      isPlaying = true;
+      playAmbientMusic();
     }
   });
 }
