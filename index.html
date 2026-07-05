@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NITHIN & AMALA — Our Wedding Day</title>
+  <meta name="description" content="Join us in celebrating the wedding of NITHIN and AMALA. Explore our love story, RSVP, view schedule details, and join our live stream.">
+  
+  <!-- SEO Meta Tags -->
+  <meta property="og:title" content="NITHIN & AMALA — Our Wedding Day">
+  <meta property="og:description" content="We invite you to share in our joy. Visit our wedding website to RSVP, see our timeline, and join the celebration.">
+  <meta property="og:type" content="website">
+  
+  <!-- Google Fonts: Cormorant Garamond for luxury serif headers, Inter for readable UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Core stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Canvas for Gold Particle/Dust Effect -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Ambient Audio Synthesizer Controls -->
+  <div class="audio-control-container" id="audioContainer" title="Play Ambient Music">
+    <button class="audio-toggle" id="audioToggle" aria-label="Toggle romantic music">
+      <svg class="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+      <svg class="icon-pause hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="6" y="4" width="4" height="16"></rect>
+        <rect x="14" y="4" width="4" height="16"></rect>
+      </svg>
+    </button>
+    <div class="waveform-animation" id="waveform">
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+      <span class="wave-bar"></span>
+    </div>
+    <span class="music-label">Ambient Sound</span>
+  </div>
+
+  <div id="ytPlayerContainer" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; overflow: hidden;"></div>
+
+  <!-- Navigation Menu -->
+  <header class="navbar">
+    <div class="logo">N & A</div>
+    <nav class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#story">Our Story</a>
+      <a href="#invitation">Invitation</a>
+      <a href="#events">Schedule</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#livestream">Live Stream</a>
+      <a href="#rsvp">RSVP</a>
+      <a href="#wishes">Wishes</a>
+    </nav>
+    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle Navigation Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero-section">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-content">
+      <span class="subtitle scroll-reveal">WE ARE GETTING MARRIED</span>
+      <h1 class="main-title scroll-reveal">NITHIN & AMALA</h1>
+      <p class="date-location scroll-reveal">November 8, 2026 • Paris, France</p>
+      
+      <!-- Countdown Timer -->
+      <div class="countdown-container scroll-reveal">
+        <div class="countdown-item">
+          <span class="number" id="days">00</span>
+          <span class="label">Days</span>
+        </div>
+        <div class="countdown-divider">:</div>
+        <div class="countdown-item">
+          <span class="number" id="hours">00</span>
+          <span class="label">Hours</span>
+        </div>
+        <div class="countdown-divider">:</div>
+        <div class="countdown-item">
+          <span class="number" id="minutes">00</span>
+          <span class="label">Mins</span>
+        </div>
+        <div class="countdown-divider">:</div>
+        <div class="countdown-item">
+          <span class="number" id="seconds">00</span>
+          <span class="label">Secs</span>
+        </div>
+      </div>
+
+      <a href="#rsvp" class="btn btn-primary scroll-reveal">RSVP Online</a>
+    </div>
+    <div class="scroll-down-arrow">
+      <a href="#story" aria-label="Scroll down">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Love Story Section -->
+  <section id="story" class="section story-section">
+    <div class="section-decor top-decor"></div>
+    <div class="container">
+      <div class="section-header">
+        <span class="pre-title">Our Journey</span>
+        <h2 class="section-title">How It All Began</h2>
+        <div class="divider-line"></div>
+      </div>
+      
+      <!-- Story Timeline -->
+      <div class="timeline">
+        <!-- Event 1 -->
+        <div class="timeline-item left scroll-reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">October 12, 2021</span>
+            <h3>First Coffee & Coincidence</h3>
+            <p>It started with a spilled macchiato at a small Parisian cafe. A clumsy bump, a quick apology, and a conversation that lasted four hours until the cafe closed. We knew then that something special was brewing.</p>
+          </div>
+        </div>
+        <!-- Event 2 -->
+        <div class="timeline-item right scroll-reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">August 24, 2023</span>
+            <h3>Our First Home Away</h3>
+            <p>Traveling across Italy, we got lost in the cobblestone streets of Florence. Under a sudden summer storm, we took shelter under a balcony, sharing a single slice of pizza. That's when we first said "I love you."</p>
+          </div>
+        </div>
+        <!-- Event 3 -->
+        <div class="timeline-item left scroll-reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <span class="timeline-date">December 24, 2025</span>
+            <h3>The Proposal on the Seine</h3>
+            <p>On a freezing Christmas Eve, Nithin booked a private boat ride on the Seine. Right in front of the glittering Eiffel Tower, he dropped to one knee. Amala said yes before he could even finish the question.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Digital Invitation Section -->
+  <section id="invitation" class="section invitation-section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="pre-title">Digital Card</span>
+        <h2 class="section-title">Your Invitation</h2>
+        <div class="divider-line"></div>
+      </div>
+      
+      <!-- Invitation Card Wrapper -->
+      <div class="invitation-card-container scroll-reveal">
+        <div class="invitation-card" id="inviteCard">
+          <div class="invitation-inner-border">
+            <div class="invitation-header">
+              <span class="invitation-logo">N & A</span>
+              <p class="invite-announcement">THE HONOR OF YOUR PRESENCE IS REQUESTED AT THE MARRIAGE OF</p>
+            </div>
+            
+            <div class="invitation-names">
+              <h2 class="name-text">AMALA</h2>
+              <span class="ampersand">&</span>
+              <h2 class="name-text">NITHIN</h2>
+            </div>
+            
+            <div class="invitation-details">
+              <p class="invitation-date">SUNDAY, NOVEMBER 8, 2026</p>
+              <p class="invitation-time">AT FOUR O'CLOCK IN THE AFTERNOON</p>
+              <div class="invitation-divider"></div>
+              <p class="invitation-venue">CHÂTEAU DE COULANCE</p>
+              <p class="invitation-address">Route de l'Ermitage, 91490 Milly-la-Forêt, France</p>
+            </div>
+
+            <div class="invitation-footer">
+              <p>RECEPTION TO FOLLOW</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="invitation-actions">
+        <button class="btn btn-secondary" id="btnPrintInvite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"></path>
+          </svg>
+          Download PDF Invite
+        </button>
+        <button class="btn btn-outline" id="btnShareInvite">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          Share Invitation
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Share Modal -->
+  <div class="modal" id="shareModal">
+    <div class="modal-content text-center">
+      <span class="close-btn" id="closeShareModal">&times;</span>
+      <h3>Share Our Special Day</h3>
+      <p class="margin-bottom-md">Send this digital invitation to your loved ones.</p>
+      
+      <!-- Dynamic QR Code Container -->
+      <div class="qr-container" id="shareQrCode"></div>
+      
+      <div class="share-grid">
+        <a href="#" class="share-btn whatsapp" id="shareWhatsapp">WhatsApp</a>
+        <a href="#" class="share-btn copy" id="shareCopyLink">Copy Link</a>
+        <a href="#" class="share-btn email" id="shareEmail">Email</a>
+      </div>
+      <p id="copyStatusText" class="copy-status hidden">Link copied to clipboard!</p>
+    </div>
+  </div>
+
+  <!-- Event Schedule Section -->
+  <section id="events" class="section events-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="pre-title">Wedding Schedule</span>
+        <h2 class="section-title">The Big Day</h2>
+        <div class="divider-line"></div>
+      </div>
+      
+      <div class="events-grid">
+        <!-- Event Card 1 -->
+        <div class="event-card scroll-reveal">
+          <div class="event-time">16:00</div>
+          <h3>The Ceremony</h3>
+          <p class="event-desc">An outdoor garden exchange of vows overlooking the lake. Soft string ensemble music starts at 15:30.</p>
+          <div class="event-meta">
+            <span>📍 Rose Gardens</span>
+            <span>👔 Formal / Black Tie</span>
+          </div>
+        </div>
+        <!-- Event Card 2 -->
+        <div class="event-card scroll-reveal">
+          <div class="event-time">18:00</div>
+          <h3>Cocktail Hour</h3>
+          <p class="event-desc">Signature champagne cocktails, hand-passed canapés, and live acoustic jazz on the château terrace.</p>
+          <div class="event-meta">
+            <span>📍 Grand Terrace</span>
+            <span>👔 Elegant Lounge</span>
+          </div>
+        </div>
+        <!-- Event Card 3 -->
+        <div class="event-card scroll-reveal">
+          <div class="event-time">19:30</div>
+          <h3>Dinner & Dancing</h3>
+          <p class="event-desc">Four-course banquet inside the Grand Hall, followed by champagne toasts, cake cutting, and dancing until dawn.</p>
+          <div class="event-meta">
+            <span>📍 The Grand Hall</span>
+            <span>👔 Black Tie Optional</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Venue Map Integration -->
+      <div class="venue-container scroll-reveal">
+        <div class="venue-info">
+          <h3>The Venue</h3>
+          <h4>Château de Coulance</h4>
+          <p>A historic 17th-century estate located in Milly-la-Forêt, offering magical gardens, classical french architecture, and absolute romance.</p>
+          <a href="https://maps.google.com" target="_blank" class="btn btn-outline margin-top-md">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+              <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Open in Google Maps
+          </a>
+        </div>
+        <div class="venue-map">
+          <!-- Elegant Interactive Map Mockup (Using styled iframe or customized visuals) -->
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2644.0202998816654!2d2.463283915661413!3d48.41761617924614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5e783915bc67d%3A0xe7a505e6b72a6b22!2sMilly-la-For%C3%AAt%2C%20France!5e0!3m2!1sen!2sus!4v1655000000000!5m2!1sen!2sus" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Château de Coulance Map Location">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo Gallery Section -->
+  <section id="gallery" class="section gallery-section bg-alt">
+    <div class="container">
+      <div class="section-header">
+        <span class="pre-title">Captured Moments</span>
+        <h2 class="section-title">Our Gallery</h2>
+        <div class="divider-line"></div>
+      </div>
+      
+      <!-- Gallery Category Filters -->
+      <div class="gallery-filters scroll-reveal">
+        <button class="filter-btn active" data-filter="all">All Photos</button>
+        <button class="filter-btn" data-filter="proposal">Proposal</button>
+        <button class="filter-btn" data-filter="travel">Travels</button>
+        <button class="filter-btn" data-filter="lifestyle">Engagement</button>
+      </div>
+      
+      <!-- Gallery Grid -->
+      <div class="gallery-grid scroll-reveal">
+        <!-- Photo 1 -->
+        <div class="gallery-item" data-category="proposal">
+          <div class="gallery-img-wrapper">
+            <!-- Simulated Luxury Wedding Images via custom elegant CSS styling/gradients or generated image -->
+            <div class="img-placeholder grad-gold-dust" data-caption="Proposal on the River Seine in Paris">
+              <span class="photo-desc">Seine Proposal</span>
+            </div>
+          </div>
+        </div>
+        <!-- Photo 2 -->
+        <div class="gallery-item" data-category="travel">
+          <div class="gallery-img-wrapper">
+            <div class="img-placeholder grad-rose-gold" data-caption="Lost in the streets of Florence, Italy">
+              <span class="photo-desc">Florence Trip</span>
+            </div>
+          </div>
+        </div>
+        <!-- Photo 3 -->
+        <div class="gallery-item" data-category="lifestyle">
+          <div class="gallery-img-wrapper">
+            <div class="img-placeholder grad-champagne" data-caption="Sunny afternoon walk in the park">
+              <span class="photo-desc">Golden Hour</span>
+            </div>
+          </div>
+        </div>
+        <!-- Photo 4 -->
+        <div class="gallery-item" data-category="travel">
+          <div class="gallery-img-wrapper">
+            <div class="img-placeholder grad-deep-gold" data-caption="Enjoying the coastal breeze in Nice">
+              <span class="photo-desc">Nice Coast</span>
+            </div>
+          </div>
+        </div>
+        <!-- Photo 5 -->
+        <div class="gallery-item" data-category="proposal">
+          <div class="gallery-img-wrapper">
+            <div class="img-placeholder grad-velvet" data-caption="The ring that changed everything">
+              <span class="photo-desc">The Ring Details</span>
+            </div>
+          </div>
+        </div>
+        <!-- Photo 6 -->
+        <div class="gallery-item" data-category="lifestyle">
+          <div class="gallery-img-wrapper">
+            <div class="img-placeholder grad-cream" data-caption="Pre-wedding photo shoot in French countryside">
+              <span class="photo-desc">Château Pre-Shoot</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal for Gallery -->
+  <div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <span class="lightbox-prev" id="lightboxPrev">&#10094;</span>
+    <div class="lightbox-content">
+      <div class="lightbox-img-container" id="lightboxImgContainer">
+        <!-- SVG or dynamic CSS placeholder element will load here -->
+      </div>
+      <div class="lightbox-caption" id="lightboxCaption">Caption Text</div>
+    </div>
+    <span class="lightbox-next" id="lightboxNext">&#10095;</span>
+  </div>
+
+  <!-- Live Streaming Section -->
+  <section id="livestream" class="section livestream-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="pre-title">Watch Live</span>
+        <h2 class="section-title">Join Us Remotely</h2>
+        <div class="divider-line"></div>
+      </div>
+      
+      <div class="livestream-container scroll-reveal">
+        <div class="video-suite">
+          <div class="video-header">
+            <div class="status-indicator">
+              <span class="live-pulse"></span>
+              <span class="status-text">LIVE</span>
+            </div>
+            <div class="stream-source-selector">
+              <select id="streamSelector" aria-label="Select Streaming Channel">
+                <option value="youtube">Main Channel (YouTube Live)</option>
+                <option value="zoom">Interactive Zoom (Join Ceremony)</option>
+                <option value="facebook">Alt Feed (Facebook Live)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="player-wrapper">
+            <!-- Simulated Video Player with customized canvas animation or embed -->
+            <div class="custom-video-player" id="videoPlayer">
+              <canvas id="videoCanvas"></canvas>
+              <div class="player-overlay" id="playerOverlay">
+                <button class="btn btn-primary" id="btnPlayStream">Join Live Stream</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Live Chat Simulator -->
+        <div class="chat-suite">
+          <div class="chat-header">
+            <h4>Live Celebrations Chat</h4>
+            <span class="viewer-count" id="viewerCount">142 Watching</span>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg system">Live chat is open. Leave a note for the couple!</div>
+          </div>
+          <form class="chat-input-form" id="chatInputForm">
+            <input type="text" id="chatUserName" placeholder="Your Name" required maxlength="25">
+            <div class="input-row">
+              <input type="text" id="chatMsgText" placeholder="Say something nice..." required maxlength="100">
+              <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP Section -->
+  <section id="rsvp" class="section rsvp-section bg-alt">
+    <div class="container small-container">
+      <div class="section-header">
+        <span class="pre-title">Kindly Respond</span>
+        <h2 class="section-title">Will You Celebrate With Us?</h2>
+        <p class="section-desc">Please respond by October 1, 2026. We cannot wait to see you!</p>
+        <div class="divider-line"></div>
+      </div>
+      
+      <div class="rsvp-card scroll-reveal">
+        <!-- RSVP Form -->
+        <form class="rsvp-form" id="rsvpForm">
+          <div class="form-group-row">
+            <div class="form-group">
+              <label for="rsvpName">Full Name</label>
+              <input type="text" id="rsvpName" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label for="rsvpEmail">Email Address</label>
+              <input type="email" id="rsvpEmail" placeholder="yourname@domain.com" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Attendance</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="attendance" value="accepts" checked>
+                <span class="custom-radio"></span>
+                Joyfully Accepts
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="attendance" value="declines">
+                <span class="custom-radio"></span>
+                Regretfully Declines
+              </label>
+            </div>
+          </div>
+          
+          <div class="rsvp-details-fields" id="rsvpDetailsFields">
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="rsvpCount">Number of Guests</label>
+                <select id="rsvpCount">
+                  <option value="1">1 Guest</option>
+                  <option value="2">2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="rsvpMeal">Meal Preference</label>
+                <select id="rsvpMeal">
+                  <option value="standard">Standard Banquet</option>
+                  <option value="vegan">Vegan / Vegetarian</option>
+                  <option value="gluten-free">Gluten-Free</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="rsvpSong">Dance Floor Song Request</label>
+              <input type="text" id="rsvpSong" placeholder="Artist — Song Title">
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">Submit RSVP</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP Confirmation Ticket Modal -->
+  <div class="modal" id="rsvpModal">
+    <div class="modal-content rsvp-ticket-content">
+      <span class="close-btn" id="closeRsvpModal">&times;</span>
+      <div class="ticket-header">
+        <span class="ticket-brand">N & A WEDDING</span>
+        <h3>Your Digital Pass</h3>
+      </div>
+      
+      <div class="ticket-body">
+        <div class="ticket-info">
+          <div class="info-group">
+            <span class="info-label">GUEST</span>
+            <span class="info-val" id="ticketGuestName">Guest Name</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">STATUS</span>
+            <span class="info-val" id="ticketStatus">CONFIRMED</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">SEATS</span>
+            <span class="info-val" id="ticketSeats">1 Seat</span>
+          </div>
+          <div class="info-group">
+            <span class="info-label">MEAL</span>
+            <span class="info-val" id="ticketMeal">Standard</span>
+          </div>
+        </div>
+        
+        <div class="ticket-qr-container">
+          <div class="ticket-qr" id="ticketQrCode"></div>
+          <span class="qr-label">Present at Check-in</span>
+        </div>
+      </div>
+      
+      <div class="ticket-footer">
+        <p>November 8, 2026 • Château de Coulance, France</p>
+        <button class="btn btn-secondary btn-sm" id="btnPrintTicket">Print Ticket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guest Wishes Wall Section -->
+  <section id="wishes" class="section wishes-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="pre-title">Wishes Wall</span>
+        <h2 class="section-title">Send Your Blessings</h2>
+        <p class="section-desc">Leave a virtual card with your love and congratulations.</p>
+        <div class="divider-line"></div>
+      </div>
+      
+      <div class="wishes-layout">
+        <!-- Input Form Side -->
+        <div class="wishes-form-container scroll-reveal">
+          <form class="wishes-form" id="wishesForm">
+            <div class="form-group">
+              <label for="wishName">Your Name</label>
+              <input type="text" id="wishName" placeholder="E.g., Uncle Robert & Aunt Helen" required>
+            </div>
+            <div class="form-group">
+              <label for="wishMessage">Your Message</label>
+              <textarea id="wishMessage" rows="5" placeholder="Write your heartfelt congratulations..." required></textarea>
+            </div>
+            
+            <div class="card-design-selector">
+              <label>Select Card Style</label>
+              <div class="design-options">
+                <label class="design-btn opt-gold active">
+                  <input type="radio" name="wishTheme" value="gold" checked>
+                  <span>Gold Trim</span>
+                </label>
+                <label class="design-btn opt-rose">
+                  <input type="radio" name="wishTheme" value="rose">
+                  <span>Rose Petal</span>
+                </label>
+                <label class="design-btn opt-navy">
+                  <input type="radio" name="wishTheme" value="navy">
+                  <span>Midnight Blue</span>
+                </label>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Post Wish</button>
+          </form>
+        </div>
+        
+        <!-- Wishes Wall Grid -->
+        <div class="wishes-grid scroll-reveal" id="wishesGrid">
+          <!-- Wishes render dynamically here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin/Organizer RSVP Dashboard Button & Modal -->
+  <div class="dashboard-trigger" id="dashboardTrigger" title="Admin RSVP Dashboard">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </svg>
+  </div>
+  
+  <div class="modal" id="adminModal">
+    <div class="modal-content admin-dashboard-content">
+      <span class="close-btn" id="closeAdminModal">&times;</span>
+      <h3>RSVP Manager Dashboard</h3>
+      <p class="margin-bottom-md">View and manage guest RSVPs and wishes.</p>
+      
+      <div class="dashboard-stats">
+        <div class="stat-box">
+          <span class="stat-num" id="statTotalRsvps">0</span>
+          <span class="stat-lbl">Responses</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="statAccepts">0</span>
+          <span class="stat-lbl">Accepts</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="statDeclines">0</span>
+          <span class="stat-lbl">Declines</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="statTotalGuests">0</span>
+          <span class="stat-lbl">Guests</span>
+        </div>
+      </div>
+      
+      <div class="dashboard-table-container">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Guests</th>
+              <th>Meal</th>
+              <th>Song Request</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminRsvpTableBody">
+            <!-- Render rows dynamically -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="dashboard-actions margin-top-md">
+        <button class="btn btn-secondary" id="btnExportCSV">Export CSV</button>
+        <button class="btn btn-outline text-danger" id="btnClearRsvps">Reset Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="container text-center">
+      <span class="footer-logo">N & A</span>
+      <p class="footer-couple">NITHIN & AMALA</p>
+      <p class="footer-note">We look forward to sharing our joy with you.</p>
+      
+      <div class="social-share">
+        <p>Send our website link to other guests:</p>
+        <div class="social-icons">
+          <a href="#" class="share-icon" id="footShareWhatsApp" title="Share on WhatsApp">WA</a>
+          <a href="#" class="share-icon" id="footShareFB" title="Share on Facebook">FB</a>
+          <a href="#" class="share-icon" id="footShareInsta" title="Share on Instagram">IG</a>
+          <a href="#" class="share-icon" id="footShareMail" title="Share via Email">✉</a>
+        </div>
+      </div>
+      
+      <p class="copyright">&copy; 2026 NITHIN & AMALA. Created for their special day.</p>
+    </div>
+  </footer>
+
+  <!-- Web Application Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
