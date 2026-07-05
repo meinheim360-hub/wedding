@@ -24,6 +24,36 @@
   <!-- Beautiful Luxury Welcome Overlay Envelope -->
   <div id="welcomeOverlay" class="welcome-overlay">
     <div class="welcome-card">
+      <!-- Interlocking Rings SVG Animation -->
+      <div class="rings-animation-container">
+        <svg class="rings-svg" viewBox="0 0 300 150">
+          <defs>
+            <linearGradient id="ringGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#BF953F" />
+              <stop offset="25%" stop-color="#FCF6BA" />
+              <stop offset="50%" stop-color="#B38728" />
+              <stop offset="75%" stop-color="#FBF5B7" />
+              <stop offset="100%" stop-color="#AA771C" />
+            </linearGradient>
+            <path id="textPathLeft" d="M 74 75 A 36 36 0 1 1 146 75 A 36 36 0 1 1 74 75" />
+            <path id="textPathRight" d="M 154 75 A 36 36 0 1 1 226 75 A 36 36 0 1 1 154 75" />
+          </defs>
+          
+          <g class="ring-group ring-left">
+            <circle cx="110" cy="75" r="36" fill="none" stroke="url(#ringGoldGrad)" stroke-width="8" filter="drop-shadow(0px 3px 5px rgba(0,0,0,0.12))" />
+            <text fill="#AA771C" font-family="'Inter', sans-serif" font-size="6.5" font-weight="700" letter-spacing="1">
+              <textPath href="#textPathLeft" startOffset="25%" text-anchor="middle">AMALA</textPath>
+            </text>
+          </g>
+          
+          <g class="ring-group ring-right">
+            <circle cx="190" cy="75" r="36" fill="none" stroke="url(#ringGoldGrad)" stroke-width="8" filter="drop-shadow(0px 3px 5px rgba(0,0,0,0.12))" />
+            <text fill="#AA771C" font-family="'Inter', sans-serif" font-size="6.5" font-weight="700" letter-spacing="1">
+              <textPath href="#textPathRight" startOffset="25%" text-anchor="middle">NITHIN</textPath>
+            </text>
+          </g>
+        </svg>
+      </div>
       <span class="welcome-subtitle">YOU ARE INVITED</span>
       <h1 class="welcome-names">NITHIN & AMALA</h1>
       <p class="welcome-date">NOVEMBER 8, 2026</p>
