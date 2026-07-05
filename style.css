@@ -2089,7 +2089,7 @@ input[type="radio"]:focus + .custom-radio {
   .scroll-down-arrow, .invitation-actions, .section-decor,
   .events-section, .story-section, .gallery-section, 
   .livestream-section, .rsvp-section, .wishes-section, 
-  .dashboard-trigger, .modal, .footer {
+  .dashboard-trigger, .modal, .footer, .welcome-overlay {
     display: none !important;
   }
   
@@ -2118,5 +2118,99 @@ input[type="radio"]:focus + .custom-radio {
     position: relative !important;
     top: 50%;
     transform: translateY(10%) !important;
+  }
+}
+
+/* Beautiful Luxury Welcome Overlay Envelope */
+.welcome-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-base);
+  background-image: radial-gradient(circle at center, rgba(197, 168, 128, 0.08) 0%, rgba(252, 251, 247, 0) 70%);
+  z-index: 10000; /* Above everything else */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), visibility 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.welcome-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.welcome-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-primary-light);
+  padding: 5rem 3rem;
+  box-shadow: var(--shadow-luxury);
+  text-align: center;
+  position: relative;
+  width: 90%;
+  max-width: 480px;
+  background-image: radial-gradient(circle at center, rgba(197, 168, 128, 0.04) 0%, transparent 100%);
+  animation: cardPulse 3s infinite alternate ease-in-out;
+}
+
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 1px solid var(--color-border);
+  pointer-events: none;
+}
+
+.welcome-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: var(--color-primary);
+  display: block;
+  margin-bottom: 1.2rem;
+  text-transform: uppercase;
+}
+
+.welcome-names {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-date {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-bottom: 3.5rem;
+}
+
+.open-envelope-btn {
+  box-shadow: 0 10px 25px rgba(197, 168, 128, 0.25);
+  font-size: 0.9rem;
+  padding: 1.1rem 2.6rem;
+}
+
+@keyframes cardPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.015); }
+}
+
+@media (max-width: 576px) {
+  .welcome-card {
+    padding: 4rem 1.5rem;
+  }
+  .welcome-names {
+    font-size: 2.6rem;
   }
 }

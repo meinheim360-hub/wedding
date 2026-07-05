@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRsvp();
   initWishes();
   initShareModal();
+  initWelcomeOverlay();
 });
 
 // ==========================================
@@ -1312,4 +1313,18 @@ function escapeHTML(str) {
       '"': '&quot;'
     }[tag] || tag)
   );
+}
+
+function initWelcomeOverlay() {
+  const overlay = document.getElementById('welcomeOverlay');
+  const btnOpen = document.getElementById('btnOpenInvite');
+  if (!overlay || !btnOpen) return;
+  
+  btnOpen.addEventListener('click', () => {
+    // satisfying browser user-gesture policy immediately
+    playAmbientMusic();
+    
+    // fade out the welcome card to reveal the falling rose petals
+    overlay.classList.add('fade-out');
+  });
 }
