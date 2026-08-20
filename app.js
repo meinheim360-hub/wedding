@@ -3,7 +3,45 @@
  * Features: Web Audio Synthesizer, LocalStorage RSVP Database, Wishes Wall, Canvas Particles, Live Stream Simulator, Image Lightbox
  */
 
+// ==========================================
+// WEDDING WEBSITE CONFIGURATION (EDITABLE)
+// ==========================================
+window.weddingConfig = {
+  groomName: "Nithin",
+  brideName: "Amala",
+  initials: "N & A",
+  weddingDate: "November 8, 2026",
+  weddingTime: "4:00 PM", // Customizable wedding time
+  countdownDate: "November 8, 2026 16:00:00", // Target countdown date (Month DD, YYYY HH:MM:SS)
+  venueName: "Eden Garden",
+  venueAddress: "Mallepelly, Pathanamthitta, Kerala, India",
+  googleMapsLink: "https://maps.google.com/?q=Eden+Garden+Mallepelly+Pathanamthitta",
+  musicYoutubeId: "UtbxruJ2r1w", // YouTube video ID for background music
+  musicLocalPath: "", // Optional local MP3 path if uploaded (e.g. "assets/audio/music.mp3")
+  
+  // Custom texts
+  welcomeSubtitle: "YOU ARE INVITED",
+  invitationMessage: "Two hearts, one promise. Two souls, one journey. The lock has found its key, and a beautiful new chapter is about to begin. Join us as we celebrate the beginning of our forever.",
+  
+  // Photo URLs (Local assets in workspace)
+  coverImage: "assets/images/photo1.png",
+  heroImage: "assets/images/photo1.png",
+  footerImage: "assets/images/photo4.png",
+  storyImages: {
+    firstMeet: "assets/images/photo2.png",
+    firstTrip: "assets/images/photo3.png",
+    proposal: "assets/images/photo4.png"
+  },
+  galleryImages: [
+    { src: "assets/images/photo1.png", title: "Lake Side", desc: "Two hearts, one view. Holding hands at the dock." },
+    { src: "assets/images/photo2.png", title: "Mountain Peak", desc: "Walking hand-in-hand in the peaceful mountains." },
+    { src: "assets/images/photo3.png", title: "The Ride", desc: "Creating endless memories on our travels." },
+    { src: "assets/images/photo4.png", title: "City Walk", desc: "Laughter in every step along the streets." }
+  ]
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+  applyConfig(); // Initialize dynamic texts and configurations
   initParticles();
   initCountdown();
   initAudioSynth();
@@ -15,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initWishes();
   initShareModal();
   initWelcomeOverlay();
+  initScratchCard(); // Load the HTML5 scratch-off canvas
+  initRingsScrollAnimation(); // Load the floating separate rings scroll-to-merge logic
 });
 
 // ==========================================
@@ -72,12 +112,29 @@ function initParticles() {
     }
     
     update() {
-      this.y += this.speedY;
-      this.x += this.speedX + Math.sin(this.sway) * this.swayWidth;
-      
-      this.rotation += this.rotationSpeed;
-      this.sway += this.swaySpeed;
-      this.flip += this.flipSpeed;
+      if (this.burstMode) {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vx *= 0.94; // Air friction
+        this.vy *= 0.94; // Air friction
+        this.vy += 0.12;  // Gravity
+        
+        this.rotation += this.rotationSpeed * 4;
+        this.flip += this.flipSpeed * 4;
+        
+        // Decay burst mode and return to normal float
+        if (Math.abs(this.vx) + Math.abs(this.vy) < 0.8) {
+          this.burstMode = false;
+          this.speedX = Math.random() * 0.4 - 0.2;
+          this.speedY = Math.random() * 1.2 + 0.8;
+        }
+      } else {
+        this.y += this.speedY;
+        this.x += this.speedX + Math.sin(this.sway) * this.swayWidth;
+        this.rotation += this.rotationSpeed;
+        this.sway += this.swaySpeed;
+        this.flip += this.flipSpeed;
+      }
       
       // Reset when falling out of bounds
       if (this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
@@ -128,6 +185,35 @@ function initParticles() {
     petals.push(new RosePetal());
   }
   
+  // Expose global trigger for petal explosion (used on unlocking and scratching)
+  window.triggerPetalBurst = function(x, y, count = 60) {
+    const canvasX = x - window.scrollX;
+    const canvasY = y - window.scrollY;
+
+    for (let i = 0; i < count; i++) {
+      const p = new RosePetal();
+      p.x = canvasX;
+      p.y = canvasY;
+      p.burstMode = true;
+      
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 8 + 4;
+      p.vx = Math.cos(angle) * speed;
+      p.vy = Math.sin(angle) * speed - 2.5; // Explode outwards and slightly upwards
+      
+      // Let burst petals have a higher speed of rotation and flip
+      p.rotationSpeed = (Math.random() - 0.5) * 0.08;
+      p.flipSpeed = Math.random() * 0.1 + 0.05;
+      
+      petals.push(p);
+    }
+    
+    // Prevent lag by capping active petals
+    if (petals.length > 250) {
+      petals.splice(0, petals.length - 250);
+    }
+  };
+  
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -145,8 +231,8 @@ function initParticles() {
 // 2. WEDDING COUNTDOWN TIMER
 // ==========================================
 function initCountdown() {
-  // Target Wedding Date: November 8, 2026 at 16:00 (Paris time is roughly UTC+2)
-  const targetDate = new Date('November 8, 2026 16:00:00').getTime();
+  const c = window.weddingConfig;
+  const targetDate = new Date(c.countdownDate).getTime();
   
   const daysEl = document.getElementById('days');
   const hoursEl = document.getElementById('hours');
@@ -186,6 +272,7 @@ function initCountdown() {
 let ytPlayer = null;
 let ytPlayerReady = false;
 let isAmbientPlaying = false;
+let ambientAudio = null; // HTML5 Audio for local MP3 files
 let ambientSynth = null;
 
 // Global Audio control methods
@@ -199,7 +286,22 @@ function playAmbientMusic() {
   const playIcon = toggle.querySelector('.icon-play');
   const pauseIcon = toggle.querySelector('.icon-pause');
   
-  if (ytPlayer && ytPlayerReady) {
+  const c = window.weddingConfig;
+  
+  if (c.musicLocalPath) {
+    // Play local audio file
+    if (!ambientAudio) {
+      ambientAudio = new Audio(c.musicLocalPath);
+      ambientAudio.loop = true;
+      ambientAudio.volume = 0.45;
+    }
+    ambientAudio.play().catch(e => {
+      console.warn("Local audio playback blocked or failed, fallback to synth.", e);
+      if (!ambientSynth) ambientSynth = new AmbientMelodySynth();
+      ambientSynth.start();
+    });
+  } else if (ytPlayer && ytPlayerReady) {
+    // Play YouTube video audio
     try {
       ytPlayer.playVideo();
     } catch(e) {
@@ -208,6 +310,7 @@ function playAmbientMusic() {
       ambientSynth.start();
     }
   } else {
+    // Play Web Audio Synth
     if (!ambientSynth) ambientSynth = new AmbientMelodySynth();
     ambientSynth.start();
   }
@@ -228,13 +331,17 @@ function pauseAmbientMusic() {
   const playIcon = toggle.querySelector('.icon-play');
   const pauseIcon = toggle.querySelector('.icon-pause');
   
-  if (ytPlayer && ytPlayerReady) {
+  if (ambientAudio) {
+    ambientAudio.pause();
+  } else if (ytPlayer && ytPlayerReady) {
     try {
       ytPlayer.pauseVideo();
     } catch(e) {
       console.warn("YouTube pause failed, stopping fallback synth", e);
     }
-  } else if (ambientSynth) {
+  }
+  
+  if (ambientSynth) {
     ambientSynth.stop();
   }
   
@@ -273,15 +380,18 @@ const firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 window.onYouTubeIframeAPIReady = function() {
+  const c = window.weddingConfig;
+  const vidId = c.musicYoutubeId || 'UtbxruJ2r1w';
+  
   ytPlayer = new YT.Player('ytPlayerContainer', {
     height: '0',
     width: '0',
-    videoId: 'UtbxruJ2r1w',
+    videoId: vidId,
     playerVars: {
       'autoplay': 1,
       'controls': 0,
       'loop': 1,
-      'playlist': 'UtbxruJ2r1w', // Required for loop to work
+      'playlist': vidId, // Required for loop to work
       'playsinline': 1,
       'enablejsapi': 1
     },
@@ -859,6 +969,7 @@ function initLiveStream() {
 // ==========================================
 function initRsvp() {
   const rsvpForm = document.getElementById('rsvpForm');
+  if (!rsvpForm) return;
   const attendanceRadios = document.getElementsByName('attendance');
   const detailsFields = document.getElementById('rsvpDetailsFields');
   
@@ -1317,14 +1428,513 @@ function escapeHTML(str) {
 
 function initWelcomeOverlay() {
   const overlay = document.getElementById('welcomeOverlay');
-  const btnOpen = document.getElementById('btnOpenInvite');
-  if (!overlay || !btnOpen) return;
+  const waxSeal = document.getElementById('waxSealBtn');
+  const cardContainer = document.getElementById('foldedCardContainer');
+  const clickToOpen = document.getElementById('clickToOpen');
   
-  btnOpen.addEventListener('click', () => {
-    // satisfying browser user-gesture policy immediately
-    playAmbientMusic();
+  if (!overlay || !waxSeal || !cardContainer) return;
+  
+  let isUnlocking = false;
+  
+  function triggerUnlock() {
+    if (isUnlocking) return;
+    isUnlocking = true;
     
-    // fade out the welcome card to reveal the falling rose petals
-    overlay.classList.add('fade-out');
+    // Add visual unlocking state
+    overlay.classList.add('unlocking');
+    
+    // Play physical stamp crack/click sound
+    playUnlockClickSound();
+    
+    // Create golden halo flash
+    const flash = document.createElement('div');
+    flash.className = 'unlock-flash';
+    cardContainer.appendChild(flash);
+    
+    flash.offsetWidth;
+    flash.classList.add('active');
+    
+    // Open card flaps (triggers left/right translate and ribbon split in CSS)
+    overlay.classList.add('card-open');
+    
+    // Spawn flower petals burst from the card center
+    if (window.triggerPetalBurst) {
+      const rect = cardContainer.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      window.triggerPetalBurst(centerX, centerY, 60);
+    }
+    
+    // Keep rings visible inside the opened flaps for 3 seconds, then zoom through!
+    setTimeout(() => {
+      // Play background music
+      playAmbientMusic();
+      
+      // Zoom through card doors
+      overlay.classList.add('zoom-through');
+      overlay.classList.add('fade-out');
+      
+      setTimeout(() => {
+        overlay.remove();
+        // Show side floating rings
+        const rL = document.getElementById('floatingRingLeft');
+        const rR = document.getElementById('floatingRingRight');
+        if (rL) rL.classList.add('visible');
+        if (rR) rR.classList.add('visible');
+      }, 1200);
+    }, 3000); // 3 seconds rings display!
+  }
+  
+  // Bind click event listeners
+  waxSeal.addEventListener('click', (e) => {
+    e.stopPropagation();
+    triggerUnlock();
+  });
+  
+  if (clickToOpen) {
+    clickToOpen.addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerUnlock();
+    });
+  }
+  
+  cardContainer.addEventListener('click', () => {
+    triggerUnlock();
+  });
+}
+
+function playUnlockClickSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(700, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.1);
+    
+    gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+    
+    osc.connect(gainNode);
+    gainNode.connect(ctx.destination);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.2);
+  } catch(e) {
+    console.warn("Could not play click sound effect", e);
+  }
+}
+
+function applyConfig() {
+  const c = window.weddingConfig;
+  
+  // Page Title
+  document.title = `${c.groomName.toUpperCase()} & ${c.brideName.toUpperCase()} — Our Wedding Day`;
+  
+  // Welcome Overlay Flaps Background
+  const leftFlap = document.getElementById('leftFlap');
+  const rightFlap = document.getElementById('rightFlap');
+  if (leftFlap && rightFlap) {
+    leftFlap.style.backgroundImage = `url(${c.coverImage})`;
+    rightFlap.style.backgroundImage = `url(${c.coverImage})`;
+  }
+  
+  // Navbar logo
+  const logoEl = document.querySelector('.navbar .logo');
+  if (logoEl) logoEl.textContent = c.initials;
+  
+  // Hero Section
+  const heroNames = document.querySelector('.hero-content .main-title');
+  if (heroNames) heroNames.textContent = `${c.groomName} & ${c.brideName}`;
+  
+  const heroDateLoc = document.querySelector('.hero-content .date-location');
+  if (heroDateLoc) heroDateLoc.textContent = `${c.weddingDate} • ${c.venueName}`;
+  
+  const heroSec = document.getElementById('hero');
+  if (heroSec) {
+    heroSec.style.backgroundImage = `url(${c.heroImage})`;
+    heroSec.style.backgroundSize = 'cover';
+    heroSec.style.backgroundPosition = 'center 45%';
+  }
+  
+  const footerEl = document.querySelector('.footer');
+  if (footerEl) {
+    footerEl.style.backgroundImage = `url(${c.footerImage})`;
+    footerEl.style.backgroundSize = 'cover';
+    footerEl.style.backgroundPosition = 'center 45%';
+  }
+  
+  // Invitation Card Section
+  const inviteLogo = document.querySelector('.invitation-logo');
+  if (inviteLogo) inviteLogo.textContent = c.initials;
+  
+  const inviteGroom = document.querySelector('.invitation-names .name-text:nth-child(3)');
+  const inviteBride = document.querySelector('.invitation-names .name-text:nth-child(1)');
+  if (inviteGroom) inviteGroom.textContent = c.groomName.toUpperCase();
+  if (inviteBride) inviteBride.textContent = c.brideName.toUpperCase();
+  
+  const inviteDate = document.querySelector('.invitation-date');
+  if (inviteDate) inviteDate.textContent = `SUNDAY, ${c.weddingDate.toUpperCase()}`;
+  
+  const inviteTime = document.querySelector('.invitation-time');
+  if (inviteTime) inviteTime.textContent = `AT ${c.weddingTime.toUpperCase()}`;
+  
+  const inviteVenue = document.querySelector('.invitation-venue');
+  if (inviteVenue) inviteVenue.textContent = c.venueName.toUpperCase();
+  
+  const inviteAddress = document.querySelector('.invitation-address');
+  if (inviteAddress) inviteAddress.textContent = c.venueAddress;
+  
+  // Scratch reveal card underlying content
+  const scratchRevealDate = document.getElementById('scratchRevealDate');
+  if (scratchRevealDate) scratchRevealDate.textContent = c.weddingDate.toUpperCase();
+  const scratchRevealTime = document.getElementById('scratchRevealTime');
+  if (scratchRevealTime) scratchRevealTime.textContent = `Sunday at ${c.weddingTime}`;
+  const scratchRevealVenue = document.getElementById('scratchRevealVenue');
+  if (scratchRevealVenue) scratchRevealVenue.textContent = `${c.venueName}, ${c.venueAddress}`;
+  
+  // Venue & Maps Section
+  const venueTitle = document.querySelector('.venue-info h4');
+  if (venueTitle) venueTitle.textContent = c.venueName;
+  
+  const venueText = document.querySelector('.venue-info p');
+  if (venueText) venueText.textContent = `Join us at ${c.venueName}, located in ${c.venueAddress}. We look forward to celebrating our marriage with you.`;
+  
+  const mapBtns = document.querySelectorAll('.venue-info a, #btnOpenMap');
+  mapBtns.forEach(btn => {
+    btn.setAttribute('href', c.googleMapsLink);
+  });
+  
+  const mapIframe = document.querySelector('.venue-map iframe');
+  if (mapIframe) {
+    mapIframe.setAttribute('src', `https://maps.google.com/maps?q=${encodeURIComponent(c.venueName + ' ' + c.venueAddress)}&t=&z=15&ie=UTF8&iwloc=&output=embed`);
+  }
+  
+  // Footer
+  const footerLogo = document.querySelector('.footer-logo');
+  if (footerLogo) footerLogo.textContent = c.initials;
+  
+  const footerCouple = document.querySelector('.footer-couple');
+  if (footerCouple) footerCouple.textContent = `${c.groomName.toUpperCase()} & ${c.brideName.toUpperCase()}`;
+  
+  const copyright = document.querySelector('.copyright');
+  if (copyright) copyright.textContent = `© 2026 ${c.groomName.toUpperCase()} & ${c.brideName.toUpperCase()}. Created for their special day.`;
+  
+  // Apply images to timeline
+  const timelineImgs = [c.storyImages.firstMeet, c.storyImages.firstTrip, c.storyImages.proposal];
+  const timelineContentCards = document.querySelectorAll('.timeline-content');
+  timelineContentCards.forEach((card, idx) => {
+    if (timelineImgs[idx]) {
+      let imgContainer = card.querySelector('.timeline-card-image');
+      if (!imgContainer) {
+        imgContainer = document.createElement('div');
+        imgContainer.className = 'timeline-card-image';
+        card.insertBefore(imgContainer, card.firstChild);
+      }
+      imgContainer.style.backgroundImage = `url(${timelineImgs[idx]})`;
+    }
+  });
+
+  // Re-build Gallery Grid dynamically
+  const galleryGrid = document.querySelector('.gallery-grid');
+  if (galleryGrid) {
+    galleryGrid.innerHTML = '';
+    c.galleryImages.forEach((img, idx) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      const categories = ['proposal', 'travel', 'lifestyle'];
+      const cat = categories[idx % categories.length];
+      item.setAttribute('data-category', cat);
+      
+      item.innerHTML = `
+        <div class="gallery-img-wrapper">
+          <div class="img-placeholder" style="background-image: url(${img.src})" data-caption="${img.desc}">
+            <span class="photo-desc">${img.title}</span>
+          </div>
+        </div>
+      `;
+      galleryGrid.appendChild(item);
+    });
+  }
+}
+
+function initScratchCard() {
+  const canvas = document.getElementById('scratchCanvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  const box = document.getElementById('scratchCardBox');
+  
+  let width = canvas.offsetWidth || 340;
+  let height = canvas.offsetHeight || 220;
+  
+  function setupCanvas() {
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Draw gold foil texture on canvas
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    grad.addColorStop(0, '#BF953F');
+    grad.addColorStop(0.2, '#FCF6BA');
+    grad.addColorStop(0.4, '#B38728');
+    grad.addColorStop(0.6, '#FBF5B7');
+    grad.addColorStop(0.8, '#AA771C');
+    grad.addColorStop(1, '#B38728');
+    
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, width, height);
+    
+    // Add fine gold sparkles/noise effect
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+    for (let i = 0; i < 300; i++) {
+      const rx = Math.random() * width;
+      const ry = Math.random() * height;
+      const rs = Math.random() * 1.5 + 0.5;
+      ctx.beginPath();
+      ctx.arc(rx, ry, rs, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    // Draw luxury borders on gold foil
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(8, 8, width - 16, height - 16);
+    
+    ctx.strokeStyle = 'rgba(92, 68, 28, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(11, 11, width - 22, height - 22);
+    
+    // Write text
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+    ctx.shadowBlur = 3;
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
+    
+    ctx.font = 'italic 1.8rem Cormorant Garamond, serif';
+    ctx.fillStyle = '#1A1A1A'; 
+    ctx.textAlign = 'center';
+    ctx.fillText('Nithin & Amala', width / 2, height / 2 - 15);
+    
+    ctx.font = '600 0.7rem Inter, sans-serif';
+    ctx.letterSpacing = '1.5px';
+    ctx.fillStyle = '#423118';
+    ctx.fillText('SCRATCH TO REVEAL THE DATE', width / 2, height / 2 + 25);
+    
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+  }
+  
+  setupCanvas();
+  
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  
+  function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+  }
+  
+  function scratch(x, y) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  
+  function drawLine(x1, y1, x2, y2) {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineWidth = 40;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+  
+  function checkScratchPercent() {
+    const imgData = ctx.getImageData(0, 0, width, height);
+    const pixels = imgData.data;
+    let transparentCount = 0;
+    const sampleStep = 15;
+    
+    let totalSamples = 0;
+    for (let y = sampleStep; y < height; y += sampleStep) {
+      for (let x = sampleStep; x < width; x += sampleStep) {
+        totalSamples++;
+        const pixelIdx = (y * width + x) * 4;
+        if (pixels[pixelIdx + 3] === 0) {
+          transparentCount++;
+        }
+      }
+    }
+    
+    const percentage = (transparentCount / totalSamples) * 100;
+    if (percentage > 45) {
+      revealDate();
+    }
+  }
+  
+  let revealed = false;
+  function revealDate() {
+    if (revealed) return;
+    revealed = true;
+    
+    canvas.style.pointerEvents = 'none';
+    canvas.style.opacity = '0';
+    
+    playUnlockClickSound();
+    
+    // Trigger Petal Pop burst from center of scratch card
+    const rect = canvas.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2 + window.scrollX;
+    const centerY = rect.top + rect.height / 2 + window.scrollY;
+    
+    if (window.triggerPetalBurst) {
+      window.triggerPetalBurst(centerX, centerY, 70);
+    }
+    
+    setTimeout(() => {
+      canvas.remove();
+    }, 600);
+  }
+  
+  const startScratch = (e) => {
+    isDrawing = true;
+    const pos = getMousePos(e);
+    lastX = pos.x;
+    lastY = pos.y;
+    scratch(pos.x, pos.y);
+  };
+  
+  const moveScratch = (e) => {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const pos = getMousePos(e);
+    drawLine(lastX, lastY, pos.x, pos.y);
+    lastX = pos.x;
+    lastY = pos.y;
+    
+    if (Math.random() < 0.2) {
+      checkScratchPercent();
+    }
+  };
+  
+  const stopScratch = () => {
+    isDrawing = false;
+    checkScratchPercent();
+  };
+  
+  canvas.addEventListener('mousedown', startScratch);
+  canvas.addEventListener('mousemove', moveScratch);
+  window.addEventListener('mouseup', stopScratch);
+  
+  canvas.addEventListener('touchstart', startScratch, { passive: false });
+  canvas.addEventListener('touchmove', moveScratch, { passive: false });
+  window.addEventListener('touchend', stopScratch);
+}
+
+// ==========================================
+// 13. FLOATING RINGS SCROLL-TO-MERGE CONTROLLER
+// ==========================================
+function initRingsScrollAnimation() {
+  const ringLeft = document.getElementById('floatingRingLeft');
+  const ringRight = document.getElementById('floatingRingRight');
+  const targetContainer = document.getElementById('ringsTogetherContainer');
+  const combinedImg = document.getElementById('combinedRingsImg');
+  
+  if (!ringLeft || !ringRight || !targetContainer || !combinedImg) return;
+  
+  // Smooth scrolling animation listener
+  window.addEventListener('scroll', () => {
+    const targetRect = targetContainer.getBoundingClientRect();
+    const scrollY = window.scrollY;
+    
+    // Calculate rotation based on scroll distance
+    const rotationLeft = scrollY * 0.12;
+    const rotationRight = -scrollY * 0.12;
+    
+    // If the target container is still far down off-screen
+    if (targetRect.top > window.innerHeight) {
+      // Keep rings fixed at the sides of the viewport
+      ringLeft.style.position = 'fixed';
+      ringLeft.style.left = ''; // fallback to default CSS coordinates
+      ringLeft.style.top = '45vh';
+      ringLeft.style.transform = `translateY(-50%) rotate(${rotationLeft}deg)`;
+      ringLeft.style.opacity = ringLeft.classList.contains('visible') ? '0.85' : '0';
+      
+      ringRight.style.position = 'fixed';
+      ringRight.style.right = ''; 
+      ringRight.style.top = '45vh';
+      ringRight.style.transform = `translateY(-50%) rotate(${rotationRight}deg)`;
+      ringRight.style.opacity = ringRight.classList.contains('visible') ? '0.85' : '0';
+      
+      combinedImg.classList.remove('merged');
+    } else {
+      // Target container has entered the screen! Let them travel towards the center targets
+      const startY = window.innerHeight;
+      // The animation completes when the target is 100px from the screen bottom or higher
+      const endY = window.innerHeight - targetRect.height - 80;
+      
+      const totalDist = startY - endY;
+      const curDist = startY - targetRect.top;
+      let p = totalDist > 0 ? curDist / totalDist : 0;
+      p = Math.max(0, Math.min(1, p)); // Clamp progress strictly [0, 1]
+      
+      // Find exact center coordinates of target container relative to viewport
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+      
+      const rWidth = ringLeft.offsetWidth || 50;
+      const rHeight = ringLeft.offsetHeight || 50;
+      
+      // Mobile layout adjustments
+      const mobileOffset = window.innerWidth <= 768;
+      const sideGap = mobileOffset ? 10 : 24;
+      
+      if (p >= 0.95) {
+        // Fully merged! Fade out individual floating elements and reveal combined interlocked rings
+        ringLeft.style.opacity = '0';
+        ringRight.style.opacity = '0';
+        combinedImg.classList.add('merged');
+      } else {
+        // Fade combined image out, restore individuals
+        combinedImg.classList.remove('merged');
+        
+        // Left ring coordinates path (fixed side x coordinate to target center-left offset)
+        const startLeftX = sideGap;
+        const endLeftX = targetX - rWidth * 0.72; // Left side of overlap
+        const curLeftX = startLeftX + p * (endLeftX - startLeftX);
+        
+        // Right ring coordinates path (fixed side x coordinate to target center-right offset)
+        const startRightX = sideGap;
+        const endRightX = targetX - rWidth * 0.28; // Right side of overlap
+        const curRightX = startRightX + p * (endRightX - startRightX);
+        
+        // Y path for both rings (from center 45vh viewport to target center viewport)
+        const startYPos = window.innerHeight * 0.45;
+        const endYPos = targetY - rHeight * 0.5;
+        const curYPos = startYPos + p * (endYPos - startYPos);
+        
+        // Apply computed transitions
+        ringLeft.style.left = `${curLeftX}px`;
+        ringLeft.style.top = `${curYPos}px`;
+        ringLeft.style.transform = `translate(0, 0) rotate(${rotationLeft + p * 35}deg)`;
+        ringLeft.style.opacity = ringLeft.classList.contains('visible') ? (0.85 - p * 0.85) : '0';
+        
+        ringRight.style.left = `${window.innerWidth - curRightX - rWidth}px`;
+        ringRight.style.top = `${curYPos}px`;
+        ringRight.style.transform = `translate(0, 0) rotate(${rotationRight - p * 35}deg)`;
+        ringRight.style.opacity = ringRight.classList.contains('visible') ? (0.85 - p * 0.85) : '0';
+      }
+    }
   });
 }

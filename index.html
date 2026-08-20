@@ -8,8 +8,16 @@
   
   <!-- SEO Meta Tags -->
   <meta property="og:title" content="NITHIN & AMALA — Our Wedding Day">
-  <meta property="og:description" content="We invite you to share in our joy. Visit our wedding website to RSVP, see our timeline, and join the celebration.">
+  <meta property="og:description" content="Two hearts, one promise. Two souls, one journey. Join us in celebrating our wedding on November 8, 2026.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/invite_cover.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="682">
+  <meta property="og:image:height" content="1024">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NITHIN & AMALA — Our Wedding Day">
+  <meta name="twitter:description" content="Join us in celebrating our wedding on November 8, 2026.">
+  <meta name="twitter:image" content="assets/images/invite_cover.jpg">
   
   <!-- Google Fonts: Cormorant Garamond for luxury serif headers, Inter for readable UI -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,43 +29,107 @@
 </head>
 <body>
 
-  <!-- Beautiful Luxury Welcome Overlay Envelope -->
+  <!-- Floating Rings Scroll Animation Elements -->
+  <div class="floating-ring-left" id="floatingRingLeft">
+    <img src="assets/images/ring_nithin.png" alt="Nithin Ring">
+  </div>
+  <div class="floating-ring-right" id="floatingRingRight">
+    <img src="assets/images/ring_amala.png" alt="Amala Ring">
+  </div>
+
+  <!-- Beautiful Folded Kraft Card Welcome Overlay -->
   <div id="welcomeOverlay" class="welcome-overlay">
-    <div class="welcome-card">
-      <!-- Interlocking Rings SVG Animation -->
-      <div class="rings-animation-container">
-        <svg class="rings-svg" viewBox="0 0 300 150">
-          <defs>
-            <linearGradient id="ringGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#BF953F" />
-              <stop offset="25%" stop-color="#FCF6BA" />
-              <stop offset="50%" stop-color="#B38728" />
-              <stop offset="75%" stop-color="#FBF5B7" />
-              <stop offset="100%" stop-color="#AA771C" />
-            </linearGradient>
-            <path id="textPathLeft" d="M 74 75 A 36 36 0 1 1 146 75 A 36 36 0 1 1 74 75" />
-            <path id="textPathRight" d="M 154 75 A 36 36 0 1 1 226 75 A 36 36 0 1 1 154 75" />
-          </defs>
-          
-          <g class="ring-group ring-left">
-            <circle cx="110" cy="75" r="36" fill="none" stroke="url(#ringGoldGrad)" stroke-width="8" filter="drop-shadow(0px 3px 5px rgba(0,0,0,0.12))" />
-            <text fill="#AA771C" font-family="'Inter', sans-serif" font-size="6.5" font-weight="700" letter-spacing="1">
-              <textPath href="#textPathLeft" startOffset="25%" text-anchor="middle">AMALA</textPath>
-            </text>
-          </g>
-          
-          <g class="ring-group ring-right">
-            <circle cx="190" cy="75" r="36" fill="none" stroke="url(#ringGoldGrad)" stroke-width="8" filter="drop-shadow(0px 3px 5px rgba(0,0,0,0.12))" />
-            <text fill="#AA771C" font-family="'Inter', sans-serif" font-size="6.5" font-weight="700" letter-spacing="1">
-              <textPath href="#textPathRight" startOffset="25%" text-anchor="middle">NITHIN</textPath>
-            </text>
-          </g>
-        </svg>
+    <div class="welcome-envelope-container">
+      <div class="welcome-card-wrapper">
+        
+        <!-- The Folded Card Container -->
+        <div class="folded-card-container" id="foldedCardContainer">
+          <!-- SVG Definitions for Gold Gradients and Leaf Icon -->
+          <svg style="width:0; height:0; position:absolute;">
+            <defs>
+              <linearGradient id="sealGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#E5D5B8" />
+                <stop offset="30%" stop-color="#C5A059" />
+                <stop offset="70%" stop-color="#9A783A" />
+                <stop offset="100%" stop-color="#C5A059" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <!-- Inside Cushion (Revealed when card is opened) -->
+          <div class="ring-box-inside" id="ringBoxInside">
+            <div class="velvet-cushion">
+              <img src="assets/images/rings.png" alt="Nithin & Amala Rings" class="inside-rings-img" id="insideRingsImg">
+              <div class="glow-effect"></div>
+            </div>
+          </div>
+
+          <!-- 1. Left Flap -->
+          <div class="card-flap left-flap" id="leftFlap">
+            <!-- Delicate Line-Art Flower Stem -->
+            <div class="flap-flower left-flower">
+              <svg viewBox="0 0 100 200" fill="none" stroke="rgba(60, 42, 33, 0.12)" stroke-width="1.2">
+                <path d="M20,180 C30,140 40,100 45,40" />
+                <path d="M45,40 C50,25 60,15 70,10 C58,25 50,40 45,40 Z" fill="rgba(60, 42, 33, 0.03)" />
+                <path d="M35,120 C25,110 15,115 10,120 C18,125 30,125 35,120 Z" fill="rgba(60, 42, 33, 0.03)" />
+                <path d="M38,90 C48,80 58,85 62,90 C54,95 42,95 38,90 Z" fill="rgba(60, 42, 33, 0.03)" />
+                <path d="M43,65 C33,55 23,60 18,65 C26,70 38,70 43,65 Z" fill="rgba(60, 42, 33, 0.03)" />
+              </svg>
+            </div>
+            <!-- Ribbon left half -->
+            <div class="flap-ribbon left-ribbon"></div>
+            <!-- Monogram Initials Left Part -->
+            <div class="flap-monogram mon-left">N</div>
+            
+            <!-- Left Seal Half -->
+            <div class="seal-half left-seal">
+              <svg class="wax-seal-svg" viewBox="0 0 100 100">
+                <path d="M50,8 C70,6 94,18 92,46 C90,74 74,92 50,92 C26,92 8,74 8,50 C8,26 28,10 50,8 Z" fill="url(#sealGoldGrad)" />
+                <circle cx="50" cy="50" r="32" fill="none" stroke="#9A783A" stroke-width="1.5" opacity="0.6" />
+                <path d="M42,65 C48,55 52,43 54,28 M54,28 C50,34 44,38 38,36 C44,34 50,30 54,28 M54,28 C58,34 64,38 70,36 C64,34 58,30 54,28 M52,43 C46,47 42,52 42,56 C45,52 50,47 52,43 M53,52 C58,56 63,61 64,65 C60,61 55,56 53,52" stroke="#6F521B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- 2. Right Flap -->
+          <div class="card-flap right-flap" id="rightFlap">
+            <!-- Delicate Line-Art Flower Stem -->
+            <div class="flap-flower right-flower">
+              <svg viewBox="0 0 100 200" fill="none" stroke="rgba(60, 42, 33, 0.12)" stroke-width="1.2">
+                <path d="M80,180 C70,140 60,100 55,40" />
+                <path d="M55,40 C50,25 40,15 30,10 C42,25 50,40 55,40 Z" fill="rgba(60, 42, 33, 0.03)" />
+                <path d="M65,120 C75,110 85,115 90,120 C82,125 70,125 65,120 Z" fill="rgba(60, 42, 33, 0.03)" />
+                <path d="M62,90 C52,80 42,85 38,90 C46,95 58,95 62,90 Z" fill="rgba(60, 42, 33, 0.03)" />
+                <path d="M57,65 C67,55 77,60 82,65 C74,70 62,70 57,65 Z" fill="rgba(60, 42, 33, 0.03)" />
+              </svg>
+            </div>
+            <!-- Ribbon right half -->
+            <div class="flap-ribbon right-ribbon"></div>
+            <!-- Monogram Initials Right Part -->
+            <div class="flap-monogram mon-right">A</div>
+            
+            <!-- Right Seal Half -->
+            <div class="seal-half right-seal">
+              <svg class="wax-seal-svg" viewBox="0 0 100 100">
+                <path d="M50,8 C70,6 94,18 92,46 C90,74 74,92 50,92 C26,92 8,74 8,50 C8,26 28,10 50,8 Z" fill="url(#sealGoldGrad)" />
+                <circle cx="50" cy="50" r="32" fill="none" stroke="#9A783A" stroke-width="1.5" opacity="0.6" />
+                <path d="M42,65 C48,55 52,43 54,28 M54,28 C50,34 44,38 38,36 C44,34 50,30 54,28 M54,28 C58,34 64,38 70,36 C64,34 58,30 54,28 M52,43 C46,47 42,52 42,56 C45,52 50,47 52,43 M53,52 C58,56 63,61 64,65 C60,61 55,56 53,52" stroke="#6F521B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Stamped Wax Seal Click Button Overlay -->
+          <div class="wax-seal-btn" id="waxSealBtn"></div>
+
+          <!-- Golden Glow behind the seal -->
+          <div class="seal-glow-back"></div>
+        </div>
+
+        <!-- Under Key Click to Open Label -->
+        <div class="click-to-open-label" id="clickToOpen">
+          Click to Open
+        </div>
       </div>
-      <span class="welcome-subtitle">YOU ARE INVITED</span>
-      <h1 class="welcome-names">NITHIN & AMALA</h1>
-      <p class="welcome-date">NOVEMBER 8, 2026</p>
-      <button id="btnOpenInvite" class="btn btn-primary open-envelope-btn">Open Invitation</button>
     </div>
   </div>
 
@@ -96,7 +168,6 @@
       <a href="#events">Schedule</a>
       <a href="#gallery">Gallery</a>
       <a href="#livestream">Live Stream</a>
-      <a href="#rsvp">RSVP</a>
       <a href="#wishes">Wishes</a>
     </nav>
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle Navigation Menu">
@@ -114,8 +185,22 @@
       <h1 class="main-title scroll-reveal">NITHIN & AMALA</h1>
       <p class="date-location scroll-reveal">November 8, 2026 • Paris, France</p>
       
-      <!-- Countdown Timer -->
-      <div class="countdown-container scroll-reveal">
+      <a href="#invitation" class="btn btn-primary scroll-reveal">View Invitation</a>
+    </div>
+    <div class="scroll-down-arrow">
+      <a href="#countdown" aria-label="Scroll down">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Dedicated Countdown Section -->
+  <section id="countdown" class="countdown-section bg-alt scroll-reveal">
+    <div class="container text-center">
+      <h3 class="countdown-section-title">The Celebration Begins In</h3>
+      <div class="countdown-container">
         <div class="countdown-item">
           <span class="number" id="days">00</span>
           <span class="label">Days</span>
@@ -136,15 +221,6 @@
           <span class="label">Secs</span>
         </div>
       </div>
-
-      <a href="#rsvp" class="btn btn-primary scroll-reveal">RSVP Online</a>
-    </div>
-    <div class="scroll-down-arrow">
-      <a href="#story" aria-label="Scroll down">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
-        </svg>
-      </a>
     </div>
   </section>
 
@@ -165,8 +241,8 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <span class="timeline-date">October 12, 2021</span>
-            <h3>First Coffee & Coincidence</h3>
-            <p>It started with a spilled macchiato at a small Parisian cafe. A clumsy bump, a quick apology, and a conversation that lasted four hours until the cafe closed. We knew then that something special was brewing.</p>
+            <h3>The Spark That Started It All</h3>
+            <p>A simple beginning, a warm smile, and a conversation that flowed effortlessly. From the very first moment, we felt a deep connection that would grow to define our lives. We knew we had found our home in each other.</p>
           </div>
         </div>
         <!-- Event 2 -->
@@ -174,8 +250,8 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <span class="timeline-date">August 24, 2023</span>
-            <h3>Our First Home Away</h3>
-            <p>Traveling across Italy, we got lost in the cobblestone streets of Florence. Under a sudden summer storm, we took shelter under a balcony, sharing a single slice of pizza. That's when we first said "I love you."</p>
+            <h3>Adventures & Shared Dreams</h3>
+            <p>Exploring new places, traveling side by side, and building a library of shared laughs. Through every journey we took together, we realized that the destination didn't matter—only the hand we were holding.</p>
           </div>
         </div>
         <!-- Event 3 -->
@@ -183,9 +259,39 @@
           <div class="timeline-dot"></div>
           <div class="timeline-content">
             <span class="timeline-date">December 24, 2025</span>
-            <h3>The Proposal on the Seine</h3>
-            <p>On a freezing Christmas Eve, Nithin booked a private boat ride on the Seine. Right in front of the glittering Eiffel Tower, he dropped to one knee. Amala said yes before he could even finish the question.</p>
+            <h3>A Promise For Forever</h3>
+            <p>Under a quiet, starry sky, we took the step that would lead us here. With a promise to share a lifetime of love, joy, and laughter, we chose each other. Now, the key is turned, and our countdown begins.</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scratch to Reveal Section -->
+  <section id="scratch-date" class="section scratch-section">
+    <div class="container small-container text-center">
+      <div class="section-header">
+        <span class="pre-title">Save The Date</span>
+        <h2 class="section-title">Scratch to Reveal</h2>
+        <p class="section-desc">Gently scratch the gold card below with your finger or mouse to uncover our wedding date!</p>
+        <div class="divider-line"></div>
+      </div>
+      
+      <div class="scratch-card-container scroll-reveal">
+        <div class="scratch-card-box" id="scratchCardBox">
+          <!-- Underlying Revealed Content -->
+          <div class="scratch-revealed-content">
+            <div class="gold-card-inner">
+              <span class="card-initials">N & A</span>
+              <div class="card-heart-icon">♥</div>
+              <h3 class="card-title">Save The Date</h3>
+              <p class="card-date-large" id="scratchRevealDate">NOVEMBER 8, 2026</p>
+              <p class="card-time-large" id="scratchRevealTime">Sunday at 4:00 PM</p>
+              <p class="card-venue-sub" id="scratchRevealVenue">Eden Garden, Mallepelly, Pathanamthitta</p>
+            </div>
+          </div>
+          <!-- Canvas Overlay -->
+          <canvas class="scratch-canvas" id="scratchCanvas" width="340" height="220"></canvas>
         </div>
       </div>
     </div>
@@ -352,14 +458,7 @@
         <div class="divider-line"></div>
       </div>
       
-      <!-- Gallery Category Filters -->
-      <div class="gallery-filters scroll-reveal">
-        <button class="filter-btn active" data-filter="all">All Photos</button>
-        <button class="filter-btn" data-filter="proposal">Proposal</button>
-        <button class="filter-btn" data-filter="travel">Travels</button>
-        <button class="filter-btn" data-filter="lifestyle">Engagement</button>
-      </div>
-      
+
       <!-- Gallery Grid -->
       <div class="gallery-grid scroll-reveal">
         <!-- Photo 1 -->
@@ -485,120 +584,6 @@
     </div>
   </section>
 
-  <!-- RSVP Section -->
-  <section id="rsvp" class="section rsvp-section bg-alt">
-    <div class="container small-container">
-      <div class="section-header">
-        <span class="pre-title">Kindly Respond</span>
-        <h2 class="section-title">Will You Celebrate With Us?</h2>
-        <p class="section-desc">Please respond by October 1, 2026. We cannot wait to see you!</p>
-        <div class="divider-line"></div>
-      </div>
-      
-      <div class="rsvp-card scroll-reveal">
-        <!-- RSVP Form -->
-        <form class="rsvp-form" id="rsvpForm">
-          <div class="form-group-row">
-            <div class="form-group">
-              <label for="rsvpName">Full Name</label>
-              <input type="text" id="rsvpName" placeholder="Your name" required>
-            </div>
-            <div class="form-group">
-              <label for="rsvpEmail">Email Address</label>
-              <input type="email" id="rsvpEmail" placeholder="yourname@domain.com" required>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label>Attendance</label>
-            <div class="radio-group">
-              <label class="radio-label">
-                <input type="radio" name="attendance" value="accepts" checked>
-                <span class="custom-radio"></span>
-                Joyfully Accepts
-              </label>
-              <label class="radio-label">
-                <input type="radio" name="attendance" value="declines">
-                <span class="custom-radio"></span>
-                Regretfully Declines
-              </label>
-            </div>
-          </div>
-          
-          <div class="rsvp-details-fields" id="rsvpDetailsFields">
-            <div class="form-group-row">
-              <div class="form-group">
-                <label for="rsvpCount">Number of Guests</label>
-                <select id="rsvpCount">
-                  <option value="1">1 Guest</option>
-                  <option value="2">2 Guests</option>
-                  <option value="3">3 Guests</option>
-                  <option value="4">4 Guests</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="rsvpMeal">Meal Preference</label>
-                <select id="rsvpMeal">
-                  <option value="standard">Standard Banquet</option>
-                  <option value="vegan">Vegan / Vegetarian</option>
-                  <option value="gluten-free">Gluten-Free</option>
-                </select>
-              </div>
-            </div>
-            
-            <div class="form-group">
-              <label for="rsvpSong">Dance Floor Song Request</label>
-              <input type="text" id="rsvpSong" placeholder="Artist — Song Title">
-            </div>
-          </div>
-          
-          <button type="submit" class="btn btn-primary btn-block">Submit RSVP</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- RSVP Confirmation Ticket Modal -->
-  <div class="modal" id="rsvpModal">
-    <div class="modal-content rsvp-ticket-content">
-      <span class="close-btn" id="closeRsvpModal">&times;</span>
-      <div class="ticket-header">
-        <span class="ticket-brand">N & A WEDDING</span>
-        <h3>Your Digital Pass</h3>
-      </div>
-      
-      <div class="ticket-body">
-        <div class="ticket-info">
-          <div class="info-group">
-            <span class="info-label">GUEST</span>
-            <span class="info-val" id="ticketGuestName">Guest Name</span>
-          </div>
-          <div class="info-group">
-            <span class="info-label">STATUS</span>
-            <span class="info-val" id="ticketStatus">CONFIRMED</span>
-          </div>
-          <div class="info-group">
-            <span class="info-label">SEATS</span>
-            <span class="info-val" id="ticketSeats">1 Seat</span>
-          </div>
-          <div class="info-group">
-            <span class="info-label">MEAL</span>
-            <span class="info-val" id="ticketMeal">Standard</span>
-          </div>
-        </div>
-        
-        <div class="ticket-qr-container">
-          <div class="ticket-qr" id="ticketQrCode"></div>
-          <span class="qr-label">Present at Check-in</span>
-        </div>
-      </div>
-      
-      <div class="ticket-footer">
-        <p>November 8, 2026 • Château de Coulance, France</p>
-        <button class="btn btn-secondary btn-sm" id="btnPrintTicket">Print Ticket</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Guest Wishes Wall Section -->
   <section id="wishes" class="section wishes-section">
@@ -714,7 +699,12 @@
   <!-- Footer Section -->
   <footer class="footer">
     <div class="container text-center">
-      <span class="footer-logo">N & A</span>
+      <!-- Combined Rings Scroll Target -->
+      <div class="rings-together-container" id="ringsTogetherContainer">
+        <div class="rings-together-target" id="ringsTogetherTarget">
+          <img src="assets/images/rings.png" alt="Wedding Rings Combined" id="combinedRingsImg" class="combined-rings-img">
+        </div>
+      </div>
       <p class="footer-couple">NITHIN & AMALA</p>
       <p class="footer-note">We look forward to sharing our joy with you.</p>
       

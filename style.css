@@ -4,27 +4,32 @@
 */
 
 :root {
-  --color-bg-base: #FCFBF7;
-  --color-bg-alt: #F6F4EE;
-  --color-primary: #C5A880; /* Antique Gold */
-  --color-primary-dark: #A98C64;
-  --color-primary-light: #E0D4C3;
-  --color-text-main: #2A2A2A;
-  --color-text-muted: #666666;
-  --color-border: rgba(197, 168, 128, 0.3);
-  --color-glass-bg: rgba(252, 251, 247, 0.75);
-  --color-glass-border: rgba(197, 168, 128, 0.25);
+  --color-bg-base: #FCFAF6; /* Elegant off-white linen texture */
+  --color-bg-alt: #F7F1E9; /* Warm sand / oatmeal accent */
+  --color-primary: #C5A059; /* Metallic Champagne Gold */
+  --color-primary-dark: #8F6E2F; /* Deep Burnished Bronze-Gold */
+  --color-primary-light: #E5D5B8; /* Pale Warm Gold tint */
+  --color-text-main: #2C221C; /* Dark Espresso Brown (highly sophisticated) */
+  --color-text-muted: #74665D; /* Soft latte taupe shade */
+  --color-border: rgba(197, 160, 89, 0.28); /* Fine gold thread boundary */
+  --color-glass-bg: rgba(252, 250, 246, 0.88); /* Translucent cream glass */
+  --color-glass-border: rgba(197, 160, 89, 0.2);
   --color-danger: #8B2635;
   --color-success: #2A5A3B;
   
   --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   
-  --transition-smooth: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-  --transition-quick: all 0.2s ease-in-out;
+  --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* Ultra-premium easeOutExpo */
+  --transition-quick: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   
-  --shadow-luxury: 0 15px 35px rgba(42, 42, 42, 0.05), 0 5px 15px rgba(197, 168, 128, 0.1);
-  --shadow-glass: 0 8px 32px 0 rgba(42, 42, 42, 0.04);
+  --shadow-luxury: 0 20px 45px rgba(44, 34, 28, 0.04), 0 8px 24px rgba(197, 160, 89, 0.06);
+  --shadow-glass: 0 10px 35px rgba(44, 34, 28, 0.03);
+}
+
+::selection {
+  background-color: var(--color-primary-light);
+  color: var(--color-text-main);
 }
 
 /* Base Styles & Resets */
@@ -340,7 +345,7 @@ a {
   font-size: 1.8rem;
   font-weight: 300;
   letter-spacing: 0.1em;
-  color: var(--color-text-main);
+  color: var(--color-primary); /* Luxurious gold color for header brand initials */
 }
 
 .nav-links {
@@ -403,13 +408,14 @@ a {
   position: relative;
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-end; /* Align content to the bottom of the viewport */
   justify-content: center;
   text-align: center;
   color: var(--color-text-main);
   overflow: hidden;
   background-color: var(--color-bg-alt);
   background-image: radial-gradient(circle at center, rgba(197, 168, 128, 0.08) 0%, rgba(252, 251, 247, 0) 70%);
+  padding-bottom: 6.5rem; /* Leaves elegant spacing above the scroll arrow */
 }
 
 .hero-bg-overlay {
@@ -418,7 +424,9 @@ a {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(252,251,247,0.3) 0%, rgba(252,251,247,0.9) 100%);
+  background: linear-gradient(to bottom, rgba(250, 246, 240, 0.18) 0%, rgba(250, 246, 240, 0.65) 100%); /* Softer gradient for sharp picture visibility */
+  backdrop-filter: none; /* Removed blur to make the background photo fully sharp and visible */
+  -webkit-backdrop-filter: none;
   z-index: 1;
 }
 
@@ -551,11 +559,13 @@ a {
 .timeline-item.left {
   left: 0;
   text-align: right;
+  transform: translateY(-20px); /* Stagger left upward for lookbook rhythm */
 }
 
 .timeline-item.right {
   left: 50%;
   text-align: left;
+  transform: translateY(25px); /* Stagger right downward */
 }
 
 .timeline-dot {
@@ -622,12 +632,12 @@ a {
 .invitation-card {
   width: 100%;
   max-width: 520px;
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-primary-light);
+  background-color: #FAF6F0; /* Cream coffee foam ivory background */
+  border: 1px solid var(--color-border);
   padding: 3rem;
   box-shadow: var(--shadow-luxury);
   position: relative;
-  background-image: radial-gradient(circle at center, rgba(197, 168, 128, 0.04) 0%, transparent 100%);
+  background-image: radial-gradient(circle at center, rgba(197, 160, 89, 0.08) 0%, transparent 100%);
 }
 
 .invitation-card::before {
@@ -643,7 +653,7 @@ a {
 
 .invitation-inner-border {
   border: 1px solid var(--color-primary);
-  padding: 2rem;
+  padding: 2.2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -654,86 +664,97 @@ a {
 
 .invitation-logo {
   font-family: var(--font-serif);
-  font-size: 2rem;
-  color: var(--color-primary);
+  font-size: 2.2rem;
   letter-spacing: 0.05em;
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
+  background: linear-gradient(135deg, #c5a059 0%, #fbf5b7 30%, #9a783a 70%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
 }
 
 .invite-announcement {
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-text-muted);
   max-width: 250px;
   margin: 0 auto;
+  line-height: 1.5;
 }
 
 .invitation-names {
-  margin: 2rem 0;
+  margin: 2.2rem 0;
 }
 
 .name-text {
   font-family: var(--font-serif);
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-weight: 300;
-  color: var(--color-text-main);
+  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, #c5a059 0%, #fbf5b7 25%, #9a783a 65%, #c5a059 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
 }
 
 .ampersand {
   font-family: var(--font-serif);
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-style: italic;
   color: var(--color-primary);
   display: block;
-  margin: 0.5rem 0;
+  margin: 0.3rem 0;
 }
 
 .invitation-details {
-  margin-bottom: 2rem;
+  margin-bottom: 2.2rem;
 }
 
 .invitation-date {
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.22em;
   color: var(--color-text-main);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.4rem;
 }
 
 .invitation-time {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
   color: var(--color-text-muted);
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .invitation-divider {
-  width: 40px;
+  width: 50px;
   height: 1px;
   background-color: var(--color-primary);
-  margin: 1rem auto;
+  margin: 1.2rem auto;
 }
 
 .invitation-venue {
   font-family: var(--font-serif);
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   color: var(--color-primary-dark);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.02em;
 }
 
 .invitation-address {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--color-text-muted);
   max-width: 280px;
+  line-height: 1.4;
 }
 
 .invitation-footer {
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
   color: var(--color-text-muted);
 }
 
@@ -1812,16 +1833,31 @@ a {
 
 /* Footer styling */
 .footer {
-  background-color: #121212;
-  color: #CCCCCC;
-  padding: 5rem 0;
-  border-top: 1px solid #23221F;
+  position: relative;
+  background-size: cover;
+  background-position: center 45%;
+  color: var(--color-text-main);
+  padding: 6rem 0 5rem;
+  border-top: 1px solid var(--color-border);
+  z-index: 1; /* Establishes staking for the pseudo-element overlay */
+  overflow: hidden;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(252, 250, 246, 0.2) 0%, rgba(252, 250, 246, 0.75) 100%); /* Same light overlay tint as Hero */
+  z-index: -1; /* Layered underneath footer elements */
 }
 
 .footer-logo {
   font-family: var(--font-serif);
   font-size: 2.2rem;
-  color: var(--color-primary-light);
+  color: var(--color-primary-dark);
   letter-spacing: 0.1em;
   display: block;
   margin-bottom: 1.5rem;
@@ -1829,9 +1865,10 @@ a {
 
 .footer-couple {
   font-family: var(--font-serif);
-  font-size: 1.8rem;
-  color: #FFFFFF;
+  font-size: 2.2rem;
+  color: var(--color-text-main);
   margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
 }
 
 .footer-note {
@@ -1839,7 +1876,7 @@ a {
   font-style: italic;
   font-size: 1.1rem;
   margin-bottom: 3rem;
-  color: #888888;
+  color: var(--color-text-muted);
 }
 
 .social-share {
@@ -1861,26 +1898,27 @@ a {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid #333;
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: var(--transition-quick);
   font-size: 0.75rem;
   font-weight: 600;
-  color: #888888;
+  color: var(--color-text-muted);
+  background-color: rgba(252, 250, 246, 0.5); /* Semi-transparent button base */
 }
 
 .share-icon:hover {
   border-color: var(--color-primary);
-  color: #FFFFFF;
-  background-color: var(--color-primary-dark);
+  color: var(--color-bg-base);
+  background-color: var(--color-primary);
 }
 
 .copyright {
   font-size: 0.75rem;
-  color: #555555;
-  border-top: 1px solid #222;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
   padding-top: 2rem;
   margin-top: 1rem;
 }
@@ -1979,7 +2017,7 @@ input[type="radio"]:focus + .custom-radio {
 /* Responsive Styling Rules */
 @media (max-width: 992px) {
   .hero-content .main-title {
-    font-size: 4rem;
+    font-size: 3.5rem;
   }
   .events-grid {
     grid-template-columns: 1fr;
@@ -1999,6 +2037,31 @@ input[type="radio"]:focus + .custom-radio {
   }
   .wishes-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 3rem 1.5rem; /* Reduces padding to prevent text compression */
+    outline-offset: -6px; /* Adjusts gold border outline offset */
+  }
+  .hero-content .main-title {
+    font-size: 2.8rem;
+    letter-spacing: 0.18em;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content .main-title {
+    font-size: 2.3rem; /* Fits names beautifully on narrow mobile viewports */
+    letter-spacing: 0.15em;
+  }
+  .hero-content .subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+  }
+  .hero-content .date-location {
+    font-size: 0.8rem;
   }
 }
 
@@ -2039,9 +2102,11 @@ input[type="radio"]:focus + .custom-radio {
     width: 100%;
     padding: 1.5rem 0 1.5rem 40px;
     text-align: left !important;
+    transform: none !important; /* Remove stagger on mobile */
   }
   .timeline-item.right {
     left: 0;
+    transform: none !important;
   }
   .timeline-dot {
     left: 14px !important;
@@ -2121,141 +2186,888 @@ input[type="radio"]:focus + .custom-radio {
   }
 }
 
-/* Beautiful Luxury Welcome Overlay Envelope */
+/* ==========================================================================
+   Welcome Overlay & Cinematic Unlock Animation
+   ========================================================================== */
 .welcome-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--color-bg-base);
-  background-image: radial-gradient(circle at center, rgba(197, 168, 128, 0.08) 0%, rgba(252, 251, 247, 0) 70%);
-  z-index: 10000; /* Above everything else */
+  background-color: #171412; /* Premium dark background */
+  background-image: 
+    radial-gradient(circle at center, rgba(197, 168, 128, 0.15) 0%, rgba(10, 8, 7, 0.95) 80%),
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c5a880' fill-opacity='0.02'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z'/%3E%3C/g%3E%3C/svg%3E");
+  z-index: 10000;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), visibility 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
 }
 
 .welcome-overlay.fade-out {
   opacity: 0;
   visibility: hidden;
-}
-
-.welcome-card {
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-primary-light);
-  padding: 5rem 3rem;
-  box-shadow: var(--shadow-luxury);
-  text-align: center;
-  position: relative;
-  width: 90%;
-  max-width: 480px;
-  background-image: radial-gradient(circle at center, rgba(197, 168, 128, 0.04) 0%, transparent 100%);
-  animation: cardPulse 3s infinite alternate ease-in-out;
-}
-
-.welcome-card::before {
-  content: '';
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  border: 1px solid var(--color-border);
   pointer-events: none;
 }
 
-.welcome-subtitle {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  letter-spacing: 0.25em;
-  color: var(--color-primary);
-  display: block;
-  margin-bottom: 1.2rem;
-  text-transform: uppercase;
+.welcome-envelope-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
 }
 
-.welcome-names {
-  font-family: var(--font-serif);
-  font-size: 3.5rem;
-  font-weight: 300;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
-  background: linear-gradient(135deg, var(--color-text-main) 30%, var(--color-primary-dark) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.welcome-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  perspective: 1000px;
+  animation: cardFloat 4s ease-in-out infinite alternate;
 }
 
-.welcome-date {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  font-style: italic;
-  color: var(--color-text-muted);
-  margin-bottom: 3.5rem;
+.ring-box-container {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
+  transform-style: preserve-3d;
+  cursor: pointer;
 }
 
-.open-envelope-btn {
-  box-shadow: 0 10px 25px rgba(197, 168, 128, 0.25);
-  font-size: 0.9rem;
-  padding: 1.1rem 2.6rem;
+.ring-box-container:hover {
+  transform: translateY(-5px) scale(1.02);
 }
 
-@keyframes cardPulse {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.015); }
+/* Box Lid (Top Half) */
+.ring-box-lid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(135deg, #3C2A21 0%, #1A110C 100%); /* Deep coffee velvet */
+  border: 2px solid var(--color-primary);
+  border-bottom: 1.5px solid rgba(197, 160, 89, 0.5);
+  border-radius: 12px 12px 0 0;
+  z-index: 5;
+  box-shadow: 
+    0 -10px 25px rgba(0, 0, 0, 0.4),
+    inset 0 3px 8px rgba(255, 255, 255, 0.08);
+  transform-origin: top center;
+  transition: transform 1.2s cubic-bezier(0.68, -0.4, 0.32, 1.4), opacity 0.8s ease;
 }
 
-@media (max-width: 576px) {
-  .welcome-card {
-    padding: 4rem 1.5rem;
-  }
-  .welcome-names {
-    font-size: 2.6rem;
-  }
+/* Box Body (Bottom Half) */
+.ring-box-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(135deg, #2B1B13 0%, #120A07 100%);
+  border: 2px solid var(--color-primary);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0 0 12px 12px;
+  z-index: 4;
+  box-shadow: 
+    0 15px 30px rgba(0, 0, 0, 0.5),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 1.2s cubic-bezier(0.68, -0.4, 0.32, 1.4);
 }
 
-/* Rings Animation Layout */
-.rings-animation-container {
-  width: 220px;
-  height: 110px;
-  margin: 0 auto 1.5rem;
+/* Velvet Cushion Inside */
+.ring-box-inside {
+  position: absolute;
+  top: 8%;
+  left: 8%;
+  width: 84%;
+  height: 84%;
+  background: radial-gradient(circle, #4A3525 0%, #1A110C 100%); /* Warm dark chocolate velvet */
+  border-radius: 8px;
+  z-index: 2;
+  box-shadow: inset 0 0 25px rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 1.0s cubic-bezier(0.25, 1, 0.5, 1), transform 1.0s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: hidden;
 }
 
-.rings-svg {
+/* Cushioned Velvet Rings */
+.velvet-cushion {
   width: 100%;
   height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.ring-left {
-  animation: ringGlideLeft 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transform-origin: 110px 75px;
+.inside-rings-img {
+  width: 78%;
+  height: auto;
+  filter: drop-shadow(0 6px 15px rgba(0,0,0,0.6));
+  z-index: 3;
+  transform: translateY(5px);
+  animation: floatRingInside 3s ease-in-out infinite alternate;
 }
 
-.ring-right {
-  animation: ringGlideRight 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transform-origin: 190px 75px;
+@keyframes floatRingInside {
+  0% { transform: translateY(5px) scale(1); }
+  100% { transform: translateY(-3px) scale(1.04); }
 }
 
-@keyframes ringGlideLeft {
+.glow-effect {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.3) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+  animation: ringGlowPulse 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes ringGlowPulse {
+  0% { transform: scale(0.85); opacity: 0.5; }
+  100% { transform: scale(1.25); opacity: 1; }
+}
+
+/* Lock and Keyhole Target (Centered on Split Line) */
+.box-lock-container {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  margin-top: -30px; /* Sits right at the center split line */
+  z-index: 10;
+  background: radial-gradient(circle, #E5D5B8 0%, #C5A059 80%);
+  border: 1.5px solid #9A783A;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-keyhole {
+  width: 5px;
+  height: 12px;
+  background-color: #110A07;
+  clip-path: polygon(25% 0%, 75% 0%, 75% 50%, 100% 100%, 0% 100%, 25% 50%);
+}
+
+.keyhole-target {
+  position: absolute;
+  top: 50%; /* Right over the center split lock */
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* Interactive Floating Key overlay */
+.interactive-key-container {
+  position: absolute;
+  top: 40%; /* Floats on the right of the box */
+  left: 82%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-out;
+  animation: pulseKey 2s infinite alternate ease-in-out;
+}
+
+.interactive-key-container:hover {
+  transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
+}
+
+.gold-key-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+/* Key insertion animation state */
+.interactive-key-container.insert-key {
+  animation: none !important;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  transition: all 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+  top: 45.4% !important; /* Move directly into the padlock keyhole center */
+  left: 50% !important;
+  width: 32px;
+  height: 32px;
+}
+
+.interactive-key-container.turn-key {
+  transform: translate(-50%, -50%) rotate(90deg);
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Click to Open Label styling under the box */
+.click-to-open-label {
+  margin-top: 2rem;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  animation: shineLabel 2s infinite ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.click-to-open-label::after {
+  content: '▼';
+  font-size: 0.55rem;
+  opacity: 0.65;
+  margin-top: 2px;
+}
+
+.click-to-open-label:hover {
+  color: var(--color-primary-light);
+  letter-spacing: 0.28em;
+}
+
+@keyframes shineLabel {
+  0%, 100% { opacity: 0.6; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(3px); }
+}
+
+/* State changes when unlocked */
+.welcome-overlay.box-open .ring-box-lid {
+  transform: rotateX(-115deg) translateY(-25px);
+  opacity: 0.15; /* Lid pivots back and fades slightly */
+}
+
+.welcome-overlay.box-open .ring-box-inside {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Zoom through box container into the page when unlocked */
+.welcome-overlay.zoom-through .ring-box-container {
+  transform: scale(5);
+  opacity: 0;
+  transition: transform 1.3s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.9s ease-in;
+}
+
+.welcome-overlay.zoom-through .click-to-open-label {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Flash effect upon unlocking */
+.unlock-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 45%, #FFFFFF 0%, rgba(252, 246, 186, 0.9) 30%, rgba(26, 20, 15, 0) 70%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1000;
+  transition: opacity 0.5s ease-out;
+}
+
+.unlock-flash.active {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Scratch To Reveal Section
+   ========================================================================== */
+.scratch-section {
+  background-color: var(--color-bg-base);
+  padding: 8rem 0;
+}
+
+.scratch-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem 0;
+}
+
+.scratch-card-box {
+  position: relative;
+  width: 340px;
+  height: 220px;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: var(--shadow-luxury);
+  overflow: hidden;
+  touch-action: none; /* Prevents scrolling while scratching on mobile */
+  border: 1px solid rgba(197, 168, 128, 0.2);
+}
+
+.scratch-revealed-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gold-card-inner {
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  margin: 10px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  background: radial-gradient(circle, #FCFBF7 0%, #FAF6EE 100%);
+  position: relative;
+}
+
+.gold-card-inner::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  border: 1px double var(--color-primary-light);
+  pointer-events: none;
+}
+
+.card-initials {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.card-heart-icon {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  margin-top: -2px;
+}
+
+.card-title {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.card-date-large {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: var(--color-text-main);
+  line-height: 1.1;
+}
+
+.card-time-large {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--color-primary-dark);
+  margin-top: 0.2rem;
+}
+
+.card-venue-sub {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scratch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  cursor: crosshair;
+  border-radius: 8px;
+  transition: opacity 0.6s ease;
+}
+
+/* Timeline card image support */
+.timeline-card-image {
+  width: 100%;
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 1.5rem;
+  border-radius: 2px;
+  border: 1px solid var(--color-border);
+}
+
+/* Animations */
+@keyframes cardFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-10px) rotate(0.5deg); }
+}
+
+@keyframes pulseKey {
+  0% { opacity: 0.85; filter: drop-shadow(0 2px 4px rgba(197, 168, 128, 0.4)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 12px rgba(252, 246, 186, 0.8)); }
+}
+
+@keyframes buttonShine {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+
+@keyframes floatArrow {
+  0% { transform: translate(-50%, 0); }
+  100% { transform: translate(-50%, 8px); }
+}
+
+@media (max-width: 480px) {
+  .scratch-card-box {
+    width: 290px;
+    height: 190px;
+  }
+  .scratch-canvas {
+    width: 290px;
+    height: 190px;
+  }
+  .card-date-large {
+    font-size: 1.55rem;
+  }
+  .card-time-large {
+    font-size: 1rem;
+  }
+  .card-venue-sub {
+    max-width: 220px;
+  }
+}
+
+/* Floating Rings Scroll Animation */
+.floating-ring-left,
+.floating-ring-right {
+  position: fixed;
+  top: 45vh;
+  width: 110px; /* Larger size to make engravings clearly visible on desktop */
+  height: auto;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0; /* Hidden initially, fades in when covers are opened */
+  /* Buttery smooth inertia-feeling scroll transitions */
+  transition: opacity 0.5s ease, 
+              left 0.25s cubic-bezier(0.1, 0.75, 0.25, 1), 
+              top 0.25s cubic-bezier(0.1, 0.75, 0.25, 1), 
+              transform 0.25s cubic-bezier(0.1, 0.75, 0.25, 1);
+}
+
+.floating-ring-left {
+  left: 24px;
+}
+
+.floating-ring-right {
+  right: 24px;
+}
+
+.floating-ring-left img,
+.floating-ring-right img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.25));
+}
+
+.floating-ring-left.visible,
+.floating-ring-right.visible {
+  opacity: 0.95; /* High visibility for the names */
+}
+
+.rings-together-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem auto 2.5rem;
+  width: 180px;
+  height: 120px;
+  position: relative;
+}
+
+.rings-together-target {
+  width: 150px;
+  height: auto;
+  position: relative;
+}
+
+.combined-rings-img {
+  width: 100%;
+  height: auto;
+  opacity: 0; /* Invisible until floating rings meet */
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+}
+
+.combined-rings-img.merged {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 768px) {
+  .floating-ring-left,
+  .floating-ring-right {
+    width: 70px; /* Increased size on mobile for readability of engravings */
+    /* Snappier transition on mobile viewports to align with touch drag speed */
+    transition: opacity 0.4s ease, 
+                left 0.18s cubic-bezier(0.1, 0.75, 0.25, 1), 
+                top 0.18s cubic-bezier(0.1, 0.75, 0.25, 1), 
+                transform 0.18s cubic-bezier(0.1, 0.75, 0.25, 1);
+  }
+  .floating-ring-left {
+    left: 10px;
+  }
+  .floating-ring-right {
+    right: 10px;
+  }
+}
+
+/* Folded Photographic Monogram Card Styling */
+.folded-card-container {
+  position: relative;
+  width: 320px;
+  height: 480px;
+  background-color: transparent;
+  perspective: 1400px; /* Enhanced 3D perspective depth */
+  transform-style: preserve-3d;
+  box-shadow: 
+    0 30px 60px rgba(44, 34, 28, 0.45),
+    0 10px 20px rgba(44, 34, 28, 0.25);
+  border-radius: 4px;
+  display: flex;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  
+  /* Entrance Animation: Slides up and rotates slightly */
+  opacity: 0;
+  transform: translateY(50px) rotateX(10deg);
+  animation: introCard 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.folded-card-container:hover {
+  transform: translateY(-8px) scale(1.015);
+}
+
+@keyframes introCard {
   0% {
-    transform: translate(-50px, 0) scale(0.75) rotate(-35deg);
     opacity: 0;
+    transform: translateY(50px) rotateX(10deg);
   }
   100% {
-    transform: translate(0, 0) scale(1) rotate(-12deg);
     opacity: 1;
+    transform: translateY(0) rotateX(0deg);
   }
 }
 
-@keyframes ringGlideRight {
-  0% {
-    transform: translate(50px, 0) scale(0.75) rotate(35deg);
-    opacity: 0;
+/* Card Doors/Flaps */
+.card-flap {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #CBB593; /* Kraft paper color fallback */
+  background-size: 320px 480px; /* Stretches cover photo to fit card dimensions */
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 35px rgba(0,0,0,0.22);
+  z-index: 3;
+  transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.4s ease-in-out;
+  transform-style: preserve-3d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.left-flap {
+  left: 0;
+  border-right: 1.5px solid rgba(60, 42, 33, 0.15); /* Center seam */
+  transform-origin: left center;
+  background-position: left center; /* Crops left half of photo */
+}
+
+.right-flap {
+  right: 0;
+  border-left: 1.5px solid rgba(60, 42, 33, 0.15);
+  transform-origin: right center;
+  background-position: right center; /* Crops right half of photo */
+}
+
+/* Flap Twine Ribbon */
+.flap-ribbon {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 12px;
+  transform: translateY(-50%);
+  /* Gold twisted twine look */
+  background: repeating-linear-gradient(45deg, #B59762, #B59762 4px, #DFC394 4px, #DFC394 8px);
+  box-shadow: 
+    0 4px 8px rgba(0,0,0,0.22),
+    0 -1px 3px rgba(0,0,0,0.1);
+  z-index: 4;
+  opacity: 0;
+}
+
+.left-ribbon {
+  left: 0;
+  transform-origin: left center;
+  transform: translateY(-50%) scaleX(0);
+  animation: introRibbonLeft 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+.right-ribbon {
+  right: 0;
+  transform-origin: right center;
+  transform: translateY(-50%) scaleX(0);
+  animation: introRibbonRight 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+@keyframes introRibbonLeft {
+  0% { transform: translateY(-50%) scaleX(0); opacity: 0; }
+  100% { transform: translateY(-50%) scaleX(1); opacity: 1; }
+}
+
+@keyframes introRibbonRight {
+  0% { transform: translateY(-50%) scaleX(0); opacity: 0; }
+  100% { transform: translateY(-50%) scaleX(1); opacity: 1; }
+}
+
+/* Watermark Twig Flowers */
+.flap-flower {
+  position: absolute;
+  top: 8%;
+  width: 90%;
+  height: 84%;
+  pointer-events: none;
+  opacity: 0; /* Fade in animation */
+  transition: transform 1.2s ease;
+  animation: fadeInWatermark 1.8s ease-out 1.6s forwards;
+}
+
+.left-flower { left: 3%; }
+.right-flower { right: 3%; }
+
+/* Watermark Monograms */
+.flap-monogram {
+  font-family: var(--font-serif);
+  font-size: 3.8rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.25); /* Watermarked white initials on top of photography */
+  position: absolute;
+  top: 36%;
+  letter-spacing: 0;
+  opacity: 0;
+  animation: fadeInWatermark 1.8s ease-out 1.6s forwards;
+}
+
+.mon-left { right: 15px; }
+.mon-right { left: 15px; }
+
+@keyframes fadeInWatermark {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Seal Halves Styling */
+.seal-half {
+  position: absolute;
+  top: 50%;
+  width: 78px;
+  height: 78px;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+  opacity: 0;
+}
+
+.left-seal {
+  right: -39px;
+  transform: translateY(-50%) scale(2.0);
+  clip-path: inset(0 50% 0 0); /* Display left half only */
+  animation: stampSealLeft 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.0s forwards;
+}
+
+.right-seal {
+  left: -39px;
+  transform: translateY(-50%) scale(2.0);
+  clip-path: inset(0 0 0 50%); /* Display right half only */
+  animation: stampSealRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.0s forwards;
+}
+
+@keyframes stampSealLeft {
+  0% { transform: translateY(-50%) scale(2) rotate(-15deg); opacity: 0; }
+  75% { transform: translateY(-50%) scale(0.95) rotate(2deg); opacity: 1; }
+  100% { transform: translateY(-50%) scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes stampSealRight {
+  0% { transform: translateY(-50%) scale(2) rotate(15deg); opacity: 0; }
+  75% { transform: translateY(-50%) scale(0.95) rotate(-2deg); opacity: 1; }
+  100% { transform: translateY(-50%) scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* Click Target (Invisible circle button in the center) */
+.wax-seal-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 78px;
+  height: 78px;
+  transform: translate(-50%, -50%);
+  z-index: 12;
+  cursor: pointer;
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* Gold light glow behind the seal stamp */
+.seal-glow-back {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130px;
+  height: 130px;
+  background: radial-gradient(circle, rgba(197, 160, 89, 0.3) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  animation: sealGlowPulse 2.5s infinite alternate ease-in-out, fadeInWatermark 1s ease-out 2.5s forwards;
+}
+
+@keyframes sealGlowPulse {
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.95; }
+}
+
+/* Velvet Cushion Inside Sitting Deep in 3D Parallax space */
+.ring-box-inside {
+  position: absolute;
+  top: 8%;
+  left: 8%;
+  width: 84%;
+  height: 84%;
+  background: radial-gradient(circle, #3D2214 0%, #1A110C 100%);
+  border-radius: 8px;
+  z-index: 1; /* Sits behind flaps */
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateZ(-40px) scale(0.85);
+  transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
+}
+
+/* CSS State Triggers when unlocked (.card-open) */
+.welcome-overlay.card-open .left-flap {
+  transform: rotateY(-125deg); /* Flaps swing open in 3D perspective! */
+  opacity: 0.12; /* Fades out slightly as it pivots away */
+}
+
+.welcome-overlay.card-open .right-flap {
+  transform: rotateY(125deg);
+  opacity: 0.12;
+}
+
+.welcome-overlay.card-open .wax-seal-btn {
+  display: none;
+}
+
+.welcome-overlay.card-open .seal-glow-back {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.welcome-overlay.card-open .ring-box-inside {
+  opacity: 1;
+  transform: translateZ(-40px) scale(1); /* Parallax reveal */
+}
+
+/* Zoom through card frame into the home page (.zoom-through) */
+.welcome-overlay.zoom-through .folded-card-container {
+  transform: scale(3.5);
+  opacity: 0;
+  transition: transform 1.4s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.9s ease-in;
+}
+
+@media (max-width: 480px) {
+  .folded-card-container {
+    width: 280px;
+    height: 420px;
   }
-  100% {
-    transform: translate(0, 0) scale(1) rotate(12deg);
-    opacity: 1;
+  .left-flap,
+  .right-flap {
+    background-size: 280px 420px; /* Resize background photo to match mobile card scale */
+  }
+  .flap-monogram {
+    font-size: 3.2rem;
+  }
+  .wax-seal-btn {
+    width: 68px;
+    height: 68px;
   }
 }
+
+/* Dedicated Countdown Section Styling */
+.countdown-section {
+  background-color: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 4rem 0 3.5rem;
+  text-align: center;
+}
+
+.countdown-section-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-main);
+  margin-bottom: 1.8rem;
+  opacity: 0.85;
+}
+
+
